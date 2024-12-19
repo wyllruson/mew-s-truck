@@ -1,0 +1,31 @@
+{
+  "name": "mewstruck",
+  "version": "1.0.0",
+  "description": "A demo of an ecommerce site selling trading cards!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DucksFoLif/mewstruck.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DucksFoLif/mewstruck/issues"
+  },
+  "homepage": "https://github.com/DucksFoLif/mewstruck#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.5",
+    "nodemailer": "^6.9.16",
+    "promise": "^8.3.0"
+  }
+}
