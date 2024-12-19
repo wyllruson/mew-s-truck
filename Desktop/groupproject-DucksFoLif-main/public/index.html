@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			Mew's Truck
+		</title>
+		<meta name="description" content="The site is a Pokemon card shop. We sell various Pokemon card products including
+		boxes, packs, individual cards, and more. We also have a feature that allows users to
+		buy a mystery pack once a week with a chance to get a rare card.">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="styles.css">
+		<link href='https://fonts.googleapis.com/css?family=Silkscreen' rel='stylesheet'>
+		<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js">
+		</script>
+		<script src="../topbar/loggedin.js">
+		</script>
+		<script src="../script.js">
+		</script>
+	</head>
+	<body>
+		<!-- Header -->
+		<header id="header">
+			<div class="top-row">
+				<!-- Logo Section -->
+				<div class="logo">
+					<a href="../index.html">
+						<img src="../media/site_design_imgs/logo.png" alt="Logo">
+					</a>
+				</div>
+				<!-- Center Navigation Links -->
+				<div class="nav-links">
+					<a href="../index.html#products">
+						Products
+					</a>
+					<a href="../mystery/mystery.html">
+						Mystery Shop
+					</a>
+					<a href="../about/about.html">
+						About
+					</a>
+					<a href="../service/service.html">
+						Service
+					</a>
+				</div>
+				<!-- Right Side Links -->
+				<div class="right-links">
+					<a href="../cart/cart.html" onmouseover="this.querySelector('i').classList.add('fa-bounce')">
+						<i class="fa-solid fa-cart-shopping fa-xl">
+						</i>
+					</a>
+					<a href="../account/login.html" id="login-link">
+						<i class="fa-solid fa-user fa-xl">
+						</i>
+						<span>
+							Login
+						</span>
+					</a>
+				</div>
+			</div>
+		</header>
+		<!-- Storefront section -->
+		<section id="storefront">
+			<div class="popup-box">
+				<p>
+					Welcome to Mew's Truck! Have a look around...🔻
+				</p>
+			</div>
+			<!-- Truck Container with Truck and Mew SVGs -->
+			<!-- Truck Wrapper with Truck Container -->
+			<div class="truck-wrapper">
+				<div class="truck-container">
+					<img src="../media/site_design_imgs/truck.svg" alt="Truck Graphic" class="truck-svg">
+					<a href="../mystery/mystery.html" class="mew-link">
+						<img src="../media/site_design_imgs/mew.svg" alt="Mew Graphic" class="mew-graphic">
+					</a>
+					<a href="../credits/credits.html" class="credits">
+						Credits
+					</a>
+				</div>
+			</div>
+		</section>
+		<!-- Transition -->
+		<section id="grass-transition">
+			<div class="grass-div">
+				<img src="media/site_design_imgs/grass.svg" alt="Grass Vector Art" class="grass-svg">
+			</div>
+		</section>
+		<!-- Products section -->
+		<section id="products">
+			<div class="main-content">
+				<h1 class="page-title">
+					Products
+				</h1>
+				<div class="filter-bar">
+					<!-- Filter Dropdown -->
+					<div class="filters">
+						<span>
+							Filter:
+						</span>
+						<div id="myMultiselect" class="multiselect">
+							<!-- Dropdown Label -->
+							<div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+								<span id="selectedFilterText">
+									Nothing is selected
+								</span>
+								<div class="overSelect">
+								</div>
+							</div>
+							<!-- Dropdown Checkboxes -->
+							<div id="mySelectOptions">
+								<!-- Sorting Group -->
+								<label for="sort-asc">
+									<input type="checkbox" id="sort-asc" value="name-asc" data-group="sort">
+									Alphabetize (A - Z)
+								</label>
+								<label for="sort-desc">
+									<input type="checkbox" id="sort-desc" value="name-desc" data-group="sort">
+									Alphabetize (Z - A)
+								</label>
+								<label for="price-low">
+									<input type="checkbox" id="price-low" value="price-asc" data-group="sort">
+									Price (Low - High)
+								</label>
+								<label for="price-high">
+									<input type="checkbox" id="price-high" value="price-desc" data-group="sort">
+									Price (High - Low)
+								</label>
+							</div>
+						</div>
+					</div>
+					<!-- Item Count -->
+					<div class="item-count" id="item-count">
+						0 items
+					</div>
+				</div>
+			</div>
+			<!-- Product Gallery -->
+			<div id="product-gallery" class="product-gallery">
+			</div>
+		</section>
+	</body>
+
+</html>

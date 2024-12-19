@@ -1,0 +1,181 @@
+/* Global */
+* {
+	box-sizing:border-box;
+	margin:0;
+	padding:0;
+	scroll-behavior:smooth;
+}
+html,body {
+	overflow-x:hidden;
+	/* To set the width of site */
+	font-family:Arial,sans-serif;
+}
+/* Header Section */
+.top-row {
+	/* Positioning */
+    /* Display & Box Model */
+    /* Color */
+    /* Text */
+    /* Other */
+	position:fixed;
+	z-index:1000;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	width:100%;
+	margin:auto;
+	padding:.5% 10%;
+	background-color:hsla(200,60%,50%,0.5);
+	-webkit-backdrop-filter:blur(2rem);
+	backdrop-filter:blur();
+	box-shadow:0rem 5rem 10rem #fffae4;
+	text-shadow:0rem -0.1rem .5rem #fffae4,0rem 0.1rem .5rem rgb(0,0,92);
+	font-size:.8rem;
+}
+/* Logo Section */
+.logo {
+	flex-shrink:0;
+	/* Prevent the logo from shrinking */
+}
+.logo img {
+	height:2.5rem;
+}
+/* Center Navigation Links */
+.nav-links {
+	display:flex;
+	justify-content:left;
+	flex-grow:1;
+	/* Allow navigation links to take up available space */
+	margin-left:1rem;
+	padding:1rem;
+	gap:2rem;
+	/* Spacing between links */
+}
+.nav-links a {
+	white-space:nowrap;
+	/* Prevent links from breaking into multiple lines */
+	color:white;
+	text-decoration:none;
+	font-weight:bold;
+}
+/* Right-Aligned Links */
+.right-links {
+	display:flex;
+	flex-shrink:0;
+	/* Prevent shrinking */
+	gap:2rem;
+}
+.right-links a {
+	color:white;
+	text-decoration:none;
+	font-weight:bold;
+}
+/* Mystery Shop Section */
+.mysteryShop {
+	position:fixed;
+	height:100vh;
+	/* Full viewport height */
+    width:100vw;
+	/* Full viewport width */
+	background-image:url('../media/site_design_imgs/insideShop.jpg');
+	background-size:cover;
+	/* Ensures the image covers the entire viewport */
+    background-position:center;
+	/* Centers the image */
+    background-repeat:no-repeat;
+	/* Prevents tiling */
+    overflow:auto;
+}
+.bgBlur {
+	min-height:100vh;
+	-webkit-backdrop-filter:blur(.2rem);
+	backdrop-filter:blur();
+}
+/* Popup Box */
+.popup-box {
+	top:5rem;
+	position:relative;
+	width:80%;
+	margin:auto;
+	padding:3rem;
+	background-color:white;
+	border:1rem solid #66ccff;
+	border-radius:2rem;
+	color:black;
+	font-size:1.5rem;
+	text-align:center;
+	font-family:Silkscreen;
+}
+.popup-box::before {
+	content:"";
+	top:-1rem;
+	bottom:-1rem;
+	left:-1rem;
+	right:-1rem;
+	position:absolute;
+	border:.3rem solid #336699;
+	border-radius:2rem;
+}
+/* Layout for Ads and Card */
+.layout {
+	display:flex;
+	justify-content:space-between;
+	align-items:start;
+	margin-top:8rem;
+	width:100%;
+}
+.mystery-card {
+	text-align:center;
+}
+.mystery-card img {
+	width: 13rem;
+	box-shadow: 0 0 15px rgba(255, 239, 150, 0.8), 0 0 30px rgba(255, 239, 150, 0.6), 0 0 60px rgba(255, 239, 150, 0.4);
+	animation: glow-animation 1.5s infinite alternate;
+}
+
+/* Create a glowing animation */
+@keyframes glow-animation {
+	0% {
+		box-shadow: 0 0 15px rgba(255, 239, 150, 0.8), 0 0 30px rgba(255, 239, 150, 0.6), 0 0 60px rgba(255, 239, 150, 0.4);
+	}
+	100% {
+		box-shadow: 0 0 30px rgba(255, 239, 150, 1), 0 0 60px rgba(255, 239, 150, 0.8), 0 0 120px rgba(255, 239, 150, 0.6);
+	}
+}
+.mystery-card p {
+	margin:1rem;
+	text-align:center;
+	color: black;
+	text-shadow: 0 0 10px rgb(21, 0, 255), 0 0 20px rgb(255, 0, 0);
+	letter-spacing: 1px;
+	font-weight: bold;
+}
+/* Buy Button */
+.buy-button {
+	margin-top:1rem;
+	/* Add spacing above the button */
+}
+button {
+	padding:10px 20px;
+	font-size:1rem;
+	color:#000;
+	background-color:#00ff22;
+	border:2px solid rgb(0,0,0);
+	border-radius:3rem;
+	cursor:pointer;
+	transition:background-color 0.3s ease;
+}
+button:hover {
+	background-color:#abff96;
+}
+.ad-box {
+	display:flex;
+	flex-direction:column-reverse;
+	align-items:center;
+	justify-content:center;
+	font-size:.5rem;
+}
+.ad-box img {
+	max-width:20rem;
+	max-height:60vh;
+}

@@ -1,0 +1,152 @@
+/* Global */
+* {
+    box-sizing: border-box;
+	margin:0;
+	padding:0;
+	scroll-behavior:smooth;
+}
+html, body { 
+	overflow-x:hidden; /* To set the width of site */
+	font-family:Arial,sans-serif;
+}
+/* Header Section */
+.top-row {
+    /* Positioning */
+    /* Display & Box Model */
+    /* Color */
+    /* Text */
+    /* Other */
+	position:fixed;
+    z-index:1000;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+    width:100%;
+    margin: auto;
+    padding:.5% 10%;
+	background-color:hsla(200,60%,50%,0.5);
+    -webkit-backdrop-filter:blur(2rem);
+    backdrop-filter:blur();
+    box-shadow:0rem 5rem 10rem #fffae4;
+	text-shadow:0rem -0.1rem .5rem #fffae4,0rem 0.1rem .5rem rgb(0,0,92);
+    font-size:.8rem;
+}
+/* Logo Section */
+.logo {
+	flex-shrink:0;
+	/* Prevent the logo from shrinking */
+}
+.logo img {
+    height:2.5rem;
+}
+/* Center Navigation Links */
+.nav-links {
+	display:flex;
+	justify-content:left;
+    flex-grow:1;
+	/* Allow navigation links to take up available space */
+	margin-left:1rem;
+	padding:1rem;
+	gap:2rem;
+	/* Spacing between links */
+}
+.nav-links a {
+	white-space:nowrap;
+	/* Prevent links from breaking into multiple lines */
+	color:white;
+	text-decoration:none;
+	font-weight:bold;
+}
+/* Right-Aligned Links */
+.right-links {
+	display:flex;
+    flex-shrink:0;
+	/* Prevent shrinking */
+	gap:2rem;
+}
+.right-links a {
+	color:white;
+	text-decoration:none;
+	font-weight:bold;
+}
+
+
+
+/* Credits Section */
+#credit {
+	height:100vh;
+	/* Full viewport height */
+    width:100vw;
+	/* Full viewport width */
+	background-image:url('../media/site_design_imgs/pokegrass.png');
+	background-size:cover;
+	/* Ensures the image covers the entire viewport */
+    background-position:center;
+	/* Centers the image */
+    background-repeat:no-repeat;
+	/* Prevents tiling */
+}
+.creditWrapper {
+	position:relative;
+	top:2.5rem;
+}
+.creditCard {
+	position:relative;
+	top:2rem;
+}
+.blank {
+	position:absolute;
+	/* Position logo on top of the card */
+    top:20px;
+	/* Adjust as needed to position logo (distance from top) */
+    left:50%;
+	/* Center the logo horizontally */
+    transform:translateX(-50%);
+	/* Center it exactly */
+    width:30rem;
+}
+.cardLogo {
+	position:absolute;
+	/* Position logo on top of the card */
+    top:10rem;
+	/* Adjust as needed to position logo (distance from top) */
+    left:50%;
+	/* Center the logo horizontally */
+    transform:translateX(-50%);
+	/* Center it exactly */
+    width:10rem;
+	/* Resize logo (adjust as needed) */
+}
+.credits-section {
+	position:relative;
+	width:24rem;
+	margin:0 auto;
+	text-align:left;
+	font-size:1rem;
+	color:#000000;
+}
+.credits-section h3 {
+	position:relative;
+	top:4.8rem;
+	font-size:2rem;
+	text-align: center;
+}
+.credits-section ul {
+	list-style-type:none;
+	position:relative;
+	top:24rem; 
+	max-height:12rem;
+	overflow:auto;
+}
+.credits-section li {
+	margin:0 0 1rem;
+}
+.credits-section a {
+	color:#000000;
+	text-decoration:none;
+	font-weight:bold;
+	transition:color 0.3s ease;
+}
+.credits-section a:hover {
+	color:darkorchid;
+}

@@ -1,0 +1,244 @@
+/* Global */
+* {
+	box-sizing:border-box;
+	margin:0;
+	padding:0;
+	scroll-behavior:smooth;
+}
+html,body {
+	overflow-x:hidden;
+	/* To set the width of site */
+	font-family:Arial,sans-serif;
+}
+/* Header Section */
+.top-row {
+	/* Positioning */
+    /* Display & Box Model */
+    /* Color */
+    /* Text */
+    /* Other */
+	position:fixed;
+	z-index:1000;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	width:100%;
+	margin:auto;
+	padding:.5% 10%;
+	background-color:hsl(200, 60%, 50%);
+	-webkit-backdrop-filter:blur(2rem);
+	backdrop-filter:blur();
+	box-shadow:0rem 5rem 10rem #fffae4;
+	text-shadow:0rem -0.1rem .5rem #fffae4,0rem 0.1rem .5rem rgb(0,0,92);
+	font-size:.8rem;
+}
+/* Logo Section */
+.logo {
+	flex-shrink:0;
+	/* Prevent the logo from shrinking */
+}
+.logo img {
+	height:2.5rem;
+}
+/* Center Navigation Links */
+.nav-links {
+	display:flex;
+	justify-content:left;
+	flex-grow:1;
+	/* Allow navigation links to take up available space */
+	margin-left:1rem;
+	padding:1rem;
+	gap:2rem;
+	/* Spacing between links */
+}
+.nav-links a {
+	white-space:nowrap;
+	/* Prevent links from breaking into multiple lines */
+	color:white;
+	text-decoration:none;
+	font-weight:bold;
+}
+/* Right-Aligned Links */
+.right-links {
+	display:flex;
+	flex-shrink:0;
+	/* Prevent shrinking */
+	gap:2rem;
+}
+.right-links a {
+	color:white;
+	text-decoration:none;
+	font-weight:bold;
+}
+
+
+
+/* FAQ Section */
+.faq-section {
+	max-width:80%;
+	/* Adjusted for responsiveness */
+    max-height:100vh;
+	margin:auto;
+	/* Centers the section on the page */
+    padding:3rem 2rem;
+	border-radius:10px;
+	box-shadow:0 4px 6px rgba(0,0,0,0.1);
+	line-height:1.6;
+	display:flex;
+	flex-direction:column;
+	/* Ensures the content flows vertically */
+}
+/* Popup Box Styling */
+.popup-box {
+	position:relative;
+	max-width:calc(30vw);
+	padding:2rem;
+	background-color:white;
+	border-radius:35px;
+	text-align:center;
+	color:#000000;
+	margin:auto;
+	/* Centered on the page */
+    overflow-y:hidden;
+	/* Enables scrolling only if content exceeds height */
+    overflow-x:hidden;
+	/* Prevents horizontal scrolling */
+}
+.popup-box h3 {
+	text-align:center;
+	font-size:3rem;
+}
+/* Outer Border Layer using Pseudo-Element */
+.popup-box::before {
+	content:"";
+	position:absolute;
+	top:-24px;
+	/* Adjusted to match inner border thickness */
+    left:-24px;
+	right:-24px;
+	bottom:-24px;
+	border:4px solid #007bb5;
+	/* Outer border color */
+    border-radius:39px;
+	/* Slightly larger to wrap around the inner border */
+    z-index:-1;
+	/* Places it behind the popup box */
+}
+.search-box {
+	position:relative;
+	top:50%;
+	/* Moves the top edge to the middle of the page */
+    left:50%;
+	/* Moves the left edge to the middle of the page */
+    transform:translate(-50%,-50%);
+	/* Centers the element */
+    width:80%;
+	/* Adjust width as needed */
+    max-width:80%;
+	/* Optional maximum width */
+    border-radius:25px;
+	/* Large value for the circular effect */
+    overflow:hidden;
+	/* Ensures contents stay within rounded corners */
+    text-align:center;
+	/* Aligns text inside */
+}
+/* Styling the Input */
+.search-box input {
+	width:100%;
+	padding:10px 20px;
+	/* Adjust padding for height and space */
+    border:1px solid #000000;
+	/* Border for the input box */
+    border-radius:25px;
+	/* Matches the container's border-radius */
+    font-size:16px;
+	/* Adjust font size */
+    outline:none;
+	/* Removes default blue outline on focus */
+    box-sizing:border-box;
+	/* Ensures consistent padding and sizing */
+}
+.faq-list-box {
+	max-height:100vh;
+	overflow:auto;
+	/* Scroll vertically if content exceeds the height */
+}
+.faq-list dt {
+	font-weight:bold;
+	color:#007bb5;
+	margin-top:15px;
+}
+.faq-list dd {
+	margin-left:20px;
+	color:#555;
+}
+
+
+
+/* Contact Section */
+.contact-section {
+	width:100%;
+	margin:40px auto;
+	padding:.5% 10%;
+	font-family:Arial,sans-serif;
+	line-height:1.6;
+	background-color:#f9f9f9;
+	border-radius:10px;
+	box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+.contact-section h2 {
+	text-align:center;
+	font-size:2rem;
+	margin-bottom:20px;
+	color:#333;
+}
+/* Contact Form Styling */
+.contact-form {
+	display:flex;
+	flex-direction:column;
+	gap:20px;
+	/* Space between elements */
+}
+.form-row {
+	display:flex;
+	gap:20px;
+	/* Space between inputs */
+    flex-wrap:wrap;
+	/* Allow wrapping on smaller screens */
+}
+.form-row input {
+	flex:1;
+	/* Make inputs equal width */
+    min-width:calc(50% - 20px);
+	/* Ensure inputs shrink but stay usable */
+    padding:10px;
+	border:1px solid #ccc;
+	border-radius:5px;
+	font-size:16px;
+	box-sizing:border-box;
+}
+textarea {
+	width:100%;
+	padding:10px;
+	border:1px solid #ccc;
+	border-radius:5px;
+	font-size:16px;
+	resize:none;
+	/* Prevents resizing */
+    box-sizing:border-box;
+}
+button {
+	align-self:flex-start;
+	padding:10px 20px;
+	font-size:16px;
+	color:white;
+	background-color:#007bb5;
+	border:none;
+	border-radius:5px;
+	cursor:pointer;
+	transition:background-color 0.3s ease;
+}
+button:hover {
+	background-color:#005f8c;
+}
