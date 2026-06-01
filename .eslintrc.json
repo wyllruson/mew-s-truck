@@ -1,0 +1,31 @@
+{
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "rules": {
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-console": "off"
+  },
+  "overrides": [
+    {
+      "files": ["public/js/supabase-init.js"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    },
+    {
+      "files": ["public/**/*.js"],
+      "globals": {
+        "mewPath": "readonly",
+        "MewApi": "readonly",
+        "MEW_SITE": "writable",
+        "MEW_SUPABASE": "readonly"
+      }
+    }
+  ]
+}

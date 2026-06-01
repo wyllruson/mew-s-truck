@@ -1,0 +1,92 @@
+/* Auth form layout (login, signup) — extends .popup-box from components.css */
+
+.popup-box {
+	width: 30%;
+	max-width: 400px;
+	margin: 8rem auto;
+	padding: 3rem;
+	font-size: 1.5rem;
+}
+
+.popup-box h3 {
+	font-size: 24px;
+	color: #333;
+	margin-bottom: 20px;
+}
+
+.auth-form {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	text-align: left;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.form-group label {
+	font-size: 14px;
+	font-weight: bold;
+	color: #555;
+}
+
+.form-group input {
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	outline: none;
+}
+
+.form-group input:focus {
+	border-color: #007bb5;
+	box-shadow: 0 0 3px rgba(0, 123, 181, 0.5);
+}
+
+.form-buttons {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.form-buttons button {
+	padding: 10px 20px;
+	font-size: 14px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.login-btn,
+.back-btn {
+	background-color: #007bb5;
+	color: white;
+}
+
+.login-btn:hover,
+.back-btn:hover {
+	background-color: #005f8b;
+}
+
+.signup-btn {
+	background-color: #6fbaff;
+	color: white;
+}
+
+.signup-btn:hover {
+	background-color: #4e94cc;
+}
+
+@media (max-width: 768px) {
+	.popup-box {
+		width: 90%;
+	}
+
+	.form-buttons button {
+		width: 100%;
+	}
+}

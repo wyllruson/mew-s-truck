@@ -1,0 +1,61 @@
+/* Shared layout: reset, typography, site header */
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+}
+
+html,
+body {
+	overflow-x: hidden;
+	font-family: Arial, sans-serif;
+}
+
+.top-row {
+	position: fixed;
+	z-index: 1000;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 0.5% 10%;
+	background-color: hsla(200, 60%, 50%, 0.5);
+	-webkit-backdrop-filter: blur(2rem);
+	backdrop-filter: blur(2rem);
+	box-shadow: 0 5rem 10rem #fffae4;
+	text-shadow: 0 -0.1rem 0.5rem #fffae4, 0 0.1rem 0.5rem rgb(0, 0, 92);
+	font-size: 0.8rem;
+}
+
+.logo {
+	flex-shrink: 0;
+}
+
+.logo img {
+	height: 2.5rem;
+}
+
+.nav-links {
+	display: flex;
+	flex-grow: 1;
+	margin-left: 1rem;
+	padding: 1rem;
+	gap: 2rem;
+}
+
+.nav-links a,
+.right-links a {
+	white-space: nowrap;
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.right-links {
+	display: flex;
+	flex-shrink: 0;
+	gap: 2rem;
+}
