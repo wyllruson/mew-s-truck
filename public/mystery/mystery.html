@@ -1,106 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>
-			Mew's Truck
-		</title>
-		<meta name="description" content="The site is a Pokemon card shop. We sell various Pokemon card products including
-		boxes, packs, individual cards, and more. We also have a feature that allows users to
-		buy a mystery pack once a week with a chance to get a rare card.">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="mystery.css">
-		<link href='https://fonts.googleapis.com/css?family=Silkscreen' rel='stylesheet'>
-		<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous">
-		</script>
-		<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js">
-		</script>
-		<script src="../topbar/loggedin.js">
-		</script>
-	</head>
-	<body>
-		<!-- Header -->
-		<header id="header">
-			<div class="top-row">
-				<!-- Logo Section -->
-				<div class="logo">
-					<a href="../index.html">
-						<img src="../media/site_design_imgs/logo.png" alt="Logo">
-					</a>
-				</div>
-				<!-- Center Navigation Links -->
-				<div class="nav-links">
-					<a href="../index.html#products">
-						Products
-					</a>
-					<a href="../mystery/mystery.html">
-						Mystery Shop
-					</a>
-					<a href="../about/about.html">
-						About
-					</a>
-					<a href="../service/service.html">
-						Service
-					</a>
-				</div>
-				<!-- Right Side Links -->
-				<div class="right-links">
-					<a href="../cart/cart.html" 
-               onmouseover="this.querySelector('i').classList.add('fa-bounce')"
-               onmouseout="this.querySelector('i').classList.remove('fa-bounce')">
-               <i class="fa-solid fa-cart-shopping fa-xl"></i>
-            </a>
-					<a href="../account/login.html" id="login-link">
-						<i class="fa-solid fa-user fa-xl">
-						</i>
-						<span>
-							Login
-						</span>
-					</a>
-				</div>
-			</div>
-		</header>
-		<section class="mysteryShop">
-			<div class="bgBlur">
-				<div class="main-content">
-					<div class="popup-box">
-						Welcome to the Mystery Shop! The shop resets every week. Buy a mystery
-						card and test your luck! 🔻
-					</div>
-					<div class="layout">
-						<div class="ad-box">
-							Ad
-							<img src="https://media.giphy.com/media/LNVqVKjpkRtyYw5hEE/giphy.gif?cid=ecf05e47tx5knsds5ammqnpgd8m7i5blkbifzpt6tvmzyzby&ep=v1_gifs_search&rid=giphy.gif&ct=g"
-							alt="happy oh my god GIF by Fanta Thailand
-							">
-						</div>
-						<div class="mystery-card">
-							<img src="../media/site_design_imgs/backsidecard.png" alt="Mystery Card">
-							<p style="
-							font-family: 'Cinzel', serif;
-							font-size: 2rem;
-							">
-								Mystery Card
-							</p>
-							<p>
-								$5
-							</p>
-							<button id="buyMysteryCard" class="buy-button" type="button">
-								Purchase
-							</button>
-						</div>
-						<div class="ad-box">
-							Ad
-							<img src="https://media.giphy.com/media/BMttjVOtkttoDDiSFA/giphy.gif?cid=790b7611zh9ujm1oo0oo96m115p5tdyrq5lkj7l0i51a2ftx&ep=v1_gifs_search&rid=giphy.gif&ct=g"
-							alt="happy no way GIF by Fanta Thailand
-							">
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	<script src="../mystery/mystery.js"></script>
-	</body>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Mystery Shop</title>
+	<meta name="description" content="Buy a $5 mystery Pokémon card at Mew's Truck.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../css/layout.css">
+	<link rel="stylesheet" href="../css/components.css">
+	<link rel="stylesheet" href="mystery.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../js/site-config.js"></script>
+	<script src="../js/supabase-config.js"></script>
+	<script src="../js/mew-api.js"></script>
+	<script type="module" src="../js/supabase-init.js"></script>
+	<script src="../js/site-header.js" defer></script>
+	<script src="mystery.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
 
+	<section class="mysteryShop">
+		<div class="bgBlur">
+			<div class="main-content">
+				<div class="popup-box">
+					Welcome to the Mystery Shop! The shop resets every week. Buy a mystery
+					card and test your luck! 🔻
+				</div>
+				<div class="layout">
+					<div class="ad-box">
+						Ad
+						<img src="https://media.giphy.com/media/LNVqVKjpkRtyYw5hEE/giphy.gif" alt="Promotional GIF">
+					</div>
+					<div class="mystery-card">
+						<img src="../media/site_design_imgs/backsidecard.png" alt="Mystery Card">
+						<p class="mystery-card-title">Mystery Card</p>
+						<p>$5</p>
+						<button id="buyMysteryCard" class="buy-button" type="button">Purchase</button>
+					</div>
+					<div class="ad-box">
+						Ad
+						<img src="https://media.giphy.com/media/BMttjVOtkttoDDiSFA/giphy.gif" alt="Promotional GIF">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
 </html>

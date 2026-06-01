@@ -1,77 +1,44 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('search-input');
+  const contactForm = document.getElementById('contact-form');
 
-document.getElementById('search-input').addEventListener('input', function () {
+  searchInput.addEventListener('input', function onSearch() {
     const query = this.value.toLowerCase();
-    const faqItems = document.querySelectorAll('#faq-list dt'); // Only target <dt> elements (questions)
+    const faqItems = document.querySelectorAll('#faq-list dt');
 
-    faqItems.forEach(item => {
-        const answer = item.nextElementSibling; // Get the corresponding <dd> (answer)
-        const text = item.textContent.toLowerCase() + answer.textContent.toLowerCase(); // Combine question and answer text
+    faqItems.forEach((item) => {
+      const answer = item.nextElementSibling;
+      const text = `${item.textContent}${answer.textContent}`.toLowerCase();
 
-        if (text.includes(query)) {
-            item.style.display = ''; // Show question
-            answer.style.display = ''; // Show answer
-        } else {
-            item.style.display = 'none'; // Hide question
-            answer.style.display = 'none'; // Hide answer
-        }
+      const display = text.includes(query) ? '' : 'none';
+      item.style.display = display;
+      answer.style.display = display;
     });
-});
+  });
 
-
-document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        comments: document.getElementById('comments').value
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      comments: document.getElementById('comments').value,
     };
 
     try {
-        const response = await fetch('/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        });
+      const supabase = await MewApi.getSupabase();
+      const { error } = await supabase.from('contact_messages').insert(formData);
 
-        if (response.ok) {
-            alert('Message sent successfully!');
-            document.getElementById('contact-form').reset();
-        } else {
-            alert('Failed to send the message.');
-        }
+      if (error) {
+        alert('Failed to send the message.');
+        return;
+      }
+
+      alert('Message sent successfully!');
+      contactForm.reset();
     } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
     }
+  });
 });
-
-
-
-    document.getElementById('contact-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-    
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            comments: document.getElementById('comments').value
-        };
-    
-        try {
-            const response = await fetch('/send-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-    
-            if (response.ok) {
-                alert('Message sent successfully!');
-                document.getElementById('contact-form').reset();
-            } else {
-                alert('Failed to send the message.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        }
-    });

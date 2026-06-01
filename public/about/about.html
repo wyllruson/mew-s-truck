@@ -1,74 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>
-			Mew's Truck
-		</title>
-		<meta name="description" content="The site is a Pokemon card shop. We sell various Pokemon card products including
-		boxes, packs, individual cards, and more. We also have a feature that allows users to
-		buy a mystery pack once a week with a chance to get a rare card.">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="about.css">
-		<link href='https://fonts.googleapis.com/css?family=Silkscreen' rel='stylesheet'>
-		<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous">
-		</script>
-		<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js">
-		</script>
-		<script src="../topbar/loggedin.js">
-		</script>
-	</head>
-	<body>
-		<!-- Header -->
-		<header id="header">
-			<div class="top-row">
-				<!-- Logo Section -->
-				<div class="logo">
-					<a href="../index.html">
-						<img src="../media/site_design_imgs/logo.png" alt="Logo">
-					</a>
-				</div>
-				<!-- Center Navigation Links -->
-				<div class="nav-links">
-					<a href="../index.html#products">
-						Products
-					</a>
-					<a href="../mystery/mystery.html">
-						Mystery Shop
-					</a>
-					<a href="../about/about.html">
-						About
-					</a>
-					<a href="../service/service.html">
-						Service
-					</a>
-				</div>
-				<!-- Right Side Links -->
-				<div class="right-links">
-					<a href="../cart/cart.html" 
-               onmouseover="this.querySelector('i').classList.add('fa-bounce')"
-               onmouseout="this.querySelector('i').classList.remove('fa-bounce')">
-               <i class="fa-solid fa-cart-shopping fa-xl"></i>
-            </a>
-					<a href="../account/login.html" id="login-link">
-						<i class="fa-solid fa-user fa-xl">
-						</i>
-						<span>
-							Login
-						</span>
-					</a>
-				</div>
-			</div>
-		</header>
-        
-		<!-- About Page -->
-		<section id="aboutpage">
-            <div class="bgBlur">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — About</title>
+	<meta name="description" content="Learn about Mew's Truck and our Pokémon trading card mission.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../css/layout.css">
+	<link rel="stylesheet" href="../css/components.css">
+	<link rel="stylesheet" href="about.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../js/site-config.js"></script>
+	<script src="../js/supabase-config.js"></script>
+	<script src="../js/mew-api.js"></script>
+	<script type="module" src="../js/supabase-init.js"></script>
+	<script src="../js/site-header.js" defer></script></head>
+<body>
+	<header id="site-header"></header>
+
+	<section id="aboutpage">
+		<div class="bgBlur">
 			<div class="popup-box">
-				<h3>
-					About us
-				</h3>
+				<h3>About us</h3>
 				<p>
 					We are a group of passionate individuals who share a deep appreciation
 					for the diverse world of Pokémon. Whether it's through the games, TV series,
@@ -78,48 +31,19 @@
 					play. With a growing community of players, collectors, and fans, the Pokémon
 					Trading Card Game continues to bring people together in exciting and creative
 					ways.
-					<br>
-					<br>
+					<br><br>
 					As an official partner in bringing this world to life, we are delighted
 					to offer Pokémon in its card form. Our mission is to make the Pokémon Trading
 					Card Game more accessible to people of all ages and experience levels.
 					Whether you're a seasoned player looking to expand your deck, a collector
 					hunting for rare cards, or a newcomer just starting your journey, we strive
-					to provide a welcoming environment for everyone. By making Pokémon easier
-					to discover, understand, and enjoy, we hope to foster a community where
-					fans can connect, share, and grow their passion for this iconic franchise.
-					<br>
-					<br>
-					We understand that the world of Pokémon can be vast and sometimes overwhelming,
-					but that’s part of what makes it so magical. From the thrill of discovering
-					new cards to the excitement of battling with friends, there’s always something
-					new to explore. Our goal is to simplify the experience and provide resources,
-					guides, and support to help both newcomers and experienced players alike
-					find their place in the Pokémon community. Whether you're looking to dive
-					into competitive play, build your dream collection, or simply learn more
-					about the Pokémon universe, we’re here to help you every step of the way.
+					to provide a welcoming environment for everyone.
+					<br><br>
 					Together, we can ensure that the joy of Pokémon reaches even more fans
-					around the world, creating memories that last a lifetime.
-					<br>
-					<br>
-					To further enhance your Pokémon journey, we are committed to providing
-					not only a wide selection of cards, but also engaging experiences that
-					help you deepen your connection with the game and the Pokémon universe.
-					Through events, tournaments, and interactive content, we aim to offer opportunities
-					for players of all skill levels to engage, learn, and grow together. Whether
-					it’s participating in local tournaments, joining online leagues, or attending
-					special Pokémon-themed events, there’s always a way to get involved and
-					make new friends along the way. We believe that Pokémon is more than just
-					a game—it’s a shared experience that fosters camaraderie, friendly competition,
-					and creativity. Our team is constantly working to create an inclusive,
-					fun, and vibrant space where fans can come together, celebrate their love
-					of Pokémon, and discover new ways to enjoy the game. With every card you
-					collect and every match you play, we are here to ensure that your Pokémon
-					adventure is filled with excitement, growth, and unforgettable moments. 🔻
+					around the world, creating memories that last a lifetime. 🔻
 				</p>
 			</div>
-        </div>
-		</section>
-	</body>
-
+		</div>
+	</section>
+</body>
 </html>

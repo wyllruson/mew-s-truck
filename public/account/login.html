@@ -1,117 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>
-			Mew's Truck
-		</title>
-		<meta name="description" content="The site is a Pokemon card shop. We sell various Pokemon card products including
-		boxes, packs, individual cards, and more. We also have a feature that allows users to
-		buy a mystery pack once a week with a chance to get a rare card.">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="login.css">
-		<link href='https://fonts.googleapis.com/css?family=Silkscreen' rel='stylesheet'>
-		<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous">
-		</script>
-		<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js">
-		</script>
-		<script src="../topbar/loggedin.js">
-		</script>
-	</head>
-	<body>
-		<!-- Header -->
-		<header id="header">
-			<div class="top-row">
-				<!-- Logo Section -->
-				<div class="logo">
-					<a href="../index.html">
-						<img src="../media/site_design_imgs/logo.png" alt="Logo">
-					</a>
-				</div>
-				<!-- Center Navigation Links -->
-				<div class="nav-links">
-					<a href="../index.html#products">
-						Products
-					</a>
-					<a href="../mystery/mystery.html">
-						Mystery Shop
-					</a>
-					<a href="../about/about.html">
-						About
-					</a>
-					<a href="../service/service.html">
-						Service
-					</a>
-				</div>
-				<!-- Right Side Links -->
-				<div class="right-links">
-					<a href="../cart/cart.html" 
-               onmouseover="this.querySelector('i').classList.add('fa-bounce')"
-               onmouseout="this.querySelector('i').classList.remove('fa-bounce')">
-               <i class="fa-solid fa-cart-shopping fa-xl"></i>
-            </a>
-					<a href="../account/login.html" id="login-link">
-						<i class="fa-solid fa-user fa-xl">
-						</i>
-						<span>
-							Login
-						</span>
-					</a>
-				</div>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Login</title>
+	<meta name="description" content="Log in to your Mew's Truck account.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../css/layout.css">
+	<link rel="stylesheet" href="../css/components.css">
+	<link rel="stylesheet" href="../css/forms.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../js/site-config.js"></script>
+	<script src="../js/supabase-config.js"></script>
+	<script src="../js/mew-api.js"></script>
+	<script type="module" src="../js/supabase-init.js"></script>
+	<script src="../js/site-header.js" defer></script>
+	<script src="login.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
+
+	<div class="popup-box">
+		<h3>Login</h3>
+		<form class="auth-form login-form">
+			<div class="form-group">
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username" placeholder="Enter your username" required>
 			</div>
-		</header>
-		<div class="popup-box">
-			<h3>
-				Login
-			</h3>
-			<form class="login-form">
-				<div class="form-group">
-					<label for="username">
-						Username
-					</label>
-					<input type="text" id="username" name="username" placeholder="Enter your username">
-				</div>
-				<div class="form-group">
-					<label for="password">
-						Password
-					</label>
-					<input type="password" id="password" name="password" placeholder="Enter your password">
-				</div>
-				<div class="form-buttons">
-					<button type="submit" class="login-btn">
-						Login
-					</button>
-					<button type="button" class="signup-btn" onclick="window.location.href='../account/signup.html';">
-						Sign up
-					</button>
-				</div>
-			</form>
-			<script>
-				document.querySelector('.login-form').addEventListener('submit', async(e) => {
-					e.preventDefault();
-
-					const response = await fetch('/login', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({
-							username: document.getElementById('username').value,
-							password: document.getElementById('password').value
-						})
-					});
-
-					if (response.ok) {
-						// Redirect to home page on successful login
-						window.location.href = '../index.html';
-					} else {
-						const data = await response.json();
-						alert(data.error); // Show error message
-					}
-				});
-			</script>
-		</div>
-	</body>
-
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password" placeholder="Enter your password" required>
+			</div>
+			<div class="form-buttons">
+				<button type="submit" class="login-btn">Login</button>
+				<button type="button" class="signup-btn" id="go-to-signup">Sign up</button>
+			</div>
+		</form>
+	</div>
+</body>
 </html>

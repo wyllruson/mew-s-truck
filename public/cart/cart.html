@@ -1,116 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>
-			Mew's Truck
-		</title>
-		<meta name="description" content="Mew's Truck is a Pokemon card shop offering various products, including booster packs, individual cards, and weekly mystery packs for rare card chances.">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="cart.css">
-		<link href='https://fonts.googleapis.com/css?family=Silkscreen' rel='stylesheet'>
-		<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous">
-		</script>
-		<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js">
-		</script>
-		<script src="../topbar/loggedin.js">
-		</script>
-		<script src="../cart/cart.js">
-		</script>
-	</head>
-	<body>
-		<!-- Header -->
-		<header id="header">
-			<div class="top-row">
-				<!-- Logo Section -->
-				<div class="logo">
-					<a href="../index.html">
-						<img src="../media/site_design_imgs/logo.png" alt="Logo">
-					</a>
-				</div>
-				<!-- Center Navigation Links -->
-				<div class="nav-links">
-					<a href="../index.html#products">
-						Products
-					</a>
-					<a href="../mystery/mystery.html">
-						Mystery Shop
-					</a>
-					<a href="../about/about.html">
-						About
-					</a>
-					<a href="../service/service.html">
-						Service
-					</a>
-				</div>
-				<!-- Right Side Links -->
-				<div class="right-links">
-					<a href="../cart/cart.html" 
-               onmouseover="this.querySelector('i').classList.add('fa-bounce')"
-               onmouseout="this.querySelector('i').classList.remove('fa-bounce')">
-               <i class="fa-solid fa-cart-shopping fa-xl"></i>
-            </a>
-					<a href="../account/login.html" id="login-link">
-						<i class="fa-solid fa-user fa-xl">
-						</i>
-						<span>
-							Login
-						</span>
-					</a>
-				</div>
-			</div>
-		</header>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Cart</title>
+	<meta name="description" content="View and checkout items in your Mew's Truck cart.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../css/layout.css">
+	<link rel="stylesheet" href="../css/components.css">
+	<link rel="stylesheet" href="cart.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../js/site-config.js"></script>
+	<script src="../js/supabase-config.js"></script>
+	<script src="../js/mew-api.js"></script>
+	<script type="module" src="../js/supabase-init.js"></script>
+	<script src="../js/site-header.js" defer></script>
+	<script src="cart.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
 
-        <!-- Cart Section -->
-		<div class="main-content">
-			<h3>
-				Your Cart
-			</h3>
-			<div class="cart-table">
-				<div class="cart-header">
-					<span>
-						Items
-					</span>
-					<span>
-						Amount
-					</span>
-					<span>
-						Price
-					</span>
-				</div>
-				<div class="cart-item">
-					<img src="../media/site_design_imgs/sample_card.jpg" alt="Card Image">
-					<div class="item-details">
-						<span class="item-name">
-							(Name)
-						</span>
-						<span class="item-amount">
-							(Amount) (delete)
-						</span>
-						<span class="item-price">
-							(Price)
-						</span>
-					</div>
-				</div>
-			</div>
-			<div class="cart-summary">
-				<div class="subtotal">
-					<span>
-						Subtotal
-					</span>
-					<span>
-						(Price)
-					</span>
-				</div>
-				<p>
-					Taxes and shipping calculated at checkout
-				</p>
-				<button type="button">
-					Check out
-				</button>
+	<div class="main-content">
+		<h3>Your Cart</h3>
+		<div class="cart-table">
+			<div class="cart-header">
+				<span>Items</span>
+				<span>Amount</span>
+				<span>Price</span>
 			</div>
 		</div>
-	</body>
-
+		<div class="cart-summary">
+			<div class="subtotal">
+				<span>Subtotal</span>
+				<span>$0.00</span>
+			</div>
+			<p>Taxes and shipping calculated at checkout</p>
+			<button type="button">Check out</button>
+		</div>
+	</div>
+</body>
 </html>

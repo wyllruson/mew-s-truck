@@ -1,94 +1,126 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    let limit = 5; // Number of orders to fetch per request
-    let offset = 0; // Starting point
-    let allOrdersLoaded = false;
+  const session = await MewApi.requireSession();
+  if (!session) {
+    return;
+  }
 
-    const ordersList = document.getElementById('orders-list');
-    const loadMoreBtn = document.getElementById('load-more-btn');
+  const limit = 5;
+  let offset = 0;
 
-    // Function to fetch and render orders
-    async function fetchAndRenderOrders() {
-        try {
-            // Fetch user account info with pagination parameters
-            const response = await fetch(`/account-info?limit=${limit}&offset=${offset}`);
-            const data = await response.json();
+  const ordersList = document.getElementById('orders-list');
+  const loadMoreBtn = document.getElementById('load-more-btn');
 
-            if (data.loggedIn) {
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
+  async function fetchAndRenderOrders() {
+    try {
+      const supabase = await MewApi.getSupabase();
+      const profile = await MewApi.getProfile();
 
-                // Remove the placeholder "Loading..." on the first load
-                if (offset === 0) {
-                    ordersList.innerHTML = ''; // Clear placeholder message
-                }
+      document.getElementById('username').textContent = profile?.username || '';
+      document.getElementById('email').textContent = profile?.email || session.user.email || '';
 
-                // If no more orders, disable "Load More" button
-                if (!data.recentOrders || data.recentOrders.length === 0) {
-                    allOrdersLoaded = true;
-                    loadMoreBtn.style.display = 'none';
-                    return;
-                }
+      const { data: orderRows, error: ordersError } = await supabase
+        .from('orders')
+        .select('id, total_price, order_date')
+        .order('order_date', { ascending: false })
+        .range(offset, offset + limit - 1);
 
-                // Append fetched orders to the list
-                data.recentOrders.forEach(order => {
-                    const orderDiv = document.createElement('div');
-                    orderDiv.classList.add('order-item');
+      if (ordersError) {
+        throw ordersError;
+      }
 
-                    // Format the date
-                    const formattedDate = new Date(order.date).toLocaleString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: true
-                    });
+      if (offset === 0) {
+        ordersList.innerHTML = '';
+      }
 
-                    // Order summary
-                    const orderHeader = document.createElement('h3');
-                    orderHeader.textContent = `Order #${order.id} - ${formattedDate} - $${parseFloat(order.total).toFixed(2)}`;
-
-                    const itemList = document.createElement('ul');
-
-                    order.items.forEach(item => {
-                        const fullImagePath = `../Boundaries_Crossed/${item.image_path}`;
-                        const itemLi = document.createElement('li');
-                        itemLi.innerHTML = `
-                            <img src="${fullImagePath}" alt="${item.product_name}" width="50" onerror="this.src='../media/placeholder.jpg';" />
-                            <span>${item.product_name} - Qty: ${item.quantity} - $${parseFloat(item.price).toFixed(2)}</span>
-                        `;
-                        itemList.appendChild(itemLi);
-                    });
-
-                    orderDiv.appendChild(orderHeader);
-                    orderDiv.appendChild(itemList);
-                    ordersList.appendChild(orderDiv);
-                });
-
-                // Increment offset for the next batch
-                offset += limit;
-            } else {
-                window.location.href = '../account/login.html'; // Redirect if not logged in
-            }
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+      if (!orderRows || orderRows.length === 0) {
+        if (offset === 0) {
+          ordersList.innerHTML = '<p>No orders yet.</p>';
         }
+        if (loadMoreBtn) {
+          loadMoreBtn.style.display = 'none';
+        }
+        return;
+      }
+
+      for (const order of orderRows) {
+        const { data: items, error: itemsError } = await supabase
+          .from('order_items')
+          .select(
+            `
+            product_id,
+            quantity,
+            price,
+            boundaries_crossed (
+              name,
+              image_path
+            )
+          `
+          )
+          .eq('order_id', order.id);
+
+        if (itemsError) {
+          throw itemsError;
+        }
+
+        const orderDiv = document.createElement('div');
+        orderDiv.classList.add('order-item');
+
+        const formattedDate = new Date(order.order_date).toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        });
+
+        const orderHeader = document.createElement('h3');
+        orderHeader.textContent = `Order #${order.id} - ${formattedDate} - $${Number(order.total_price).toFixed(2)}`;
+
+        const itemList = document.createElement('ul');
+
+        (items || []).forEach((item) => {
+          const fullImagePath = MewApi.normalizeImagePath(item.boundaries_crossed?.image_path);
+          const itemLi = document.createElement('li');
+          itemLi.innerHTML = `
+                        <img src="${fullImagePath}" alt="${item.boundaries_crossed?.name}" width="50" onerror="this.src='${mewPath('/media/placeholder.jpg')}';" />
+                        <span>${item.boundaries_crossed?.name} - Qty: ${item.quantity} - $${Number(item.price).toFixed(2)}</span>
+                    `;
+          itemList.appendChild(itemLi);
+        });
+
+        orderDiv.appendChild(orderHeader);
+        orderDiv.appendChild(itemList);
+        ordersList.appendChild(orderDiv);
+      }
+
+      offset += limit;
+
+      if (orderRows.length < limit && loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
     }
+  }
 
-    // Initial fetch of orders
-    await fetchAndRenderOrders();
+  await fetchAndRenderOrders();
 
-    // Logout handler
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-        try {
-            const response = await fetch('/logout', { method: 'POST' });
-            if (response.ok) {
-                window.location.href = '../index.html';
-            } else {
-                console.error('Logout failed');
-            }
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    });
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', fetchAndRenderOrders);
+  }
+
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+      const supabase = await MewApi.getSupabase();
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Logout failed', error);
+        return;
+      }
+      window.location.href = mewPath('/index.html');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  });
 });
