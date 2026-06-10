@@ -4,77 +4,186 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Mew's Truck</title>
-	<meta name="description" content="Pokémon Boundaries Crossed trading card shop with cart, mystery packs, and account features.">
+	<meta name="description" content="Pokémon trading card shop with cart, mystery packs, and account features.">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="css/layout.css">
-	<link rel="stylesheet" href="css/components.css">
-	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="assets/styles/layout.css">
+	<link rel="stylesheet" href="assets/styles/components.css">
+	<link rel="stylesheet" href="assets/styles/pages/home.css">
 	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
-	<script src="js/site-config.js"></script>
-	<script src="js/supabase-config.js"></script>
-	<script src="js/mew-api.js"></script>
-	<script type="module" src="js/supabase-init.js"></script>
-	<script src="js/site-header.js" defer></script>
-	<script src="js/home.js" defer></script>
+	<script src="assets/scripts/config/site-config.js"></script>
+	<script src="assets/scripts/core/site-scroll-restore.js"></script>
+	<script src="assets/scripts/config/supabase-config.js"></script>
+	<script src="assets/scripts/core/site-modal.js"></script>
+	<script src="assets/scripts/core/site-message.js"></script>
+	<script src="assets/scripts/core/mew-api.js"></script>
+	<script src="assets/scripts/core/qty-stepper.js"></script>
+	<script type="module" src="assets/scripts/config/supabase-init.js"></script>
+	<script src="assets/scripts/core/site-header.js" defer></script>
+	<script src="assets/scripts/core/site-footer.js" defer></script>
+	<script src="assets/scripts/pages/home.js" defer></script>
 </head>
 <body>
 	<header id="site-header"></header>
 
 	<section id="storefront">
-		<div class="popup-box">
-			<p>Welcome to Mew's Truck! Have a look around...🔻</p>
+		<div class="bg-blur">
+			<div class="popup-box popup-box--hero">
+				<p>Welcome to Mew's Truck! Have a look around... 🔻</p>
+			</div>
 		</div>
 		<div class="truck-wrapper">
 			<div class="truck-container">
-				<img src="media/site_design_imgs/truck.svg" alt="Truck Graphic" class="truck-svg">
-				<a href="mystery/mystery.html" class="mew-link">
-					<img src="media/site_design_imgs/mew.svg" alt="Mew Graphic">
+				<img src="assets/images/ui/home-truck.svg" alt="Truck Graphic" class="truck-svg">
+				<a href="mystery/" class="mew-link">
+					<img src="assets/images/ui/home-mew.svg" alt="Mew Graphic">
 				</a>
-				<a href="credits/credits.html" class="credits">Credits</a>
+				<a href="credits/" class="credits" aria-label="View credits">Credits</a>
 			</div>
+			<div class="truck-grass-strip" aria-hidden="true"></div>
+			<div class="truck-grass-strip-2" aria-hidden="true"></div>
 		</div>
 	</section>
 
 	<section id="grass-transition">
 		<div class="grass-div">
-			<img src="media/site_design_imgs/grass.svg" alt="Grass Vector Art">
+			<img src="assets/images/ui/home-grass-divider.svg" alt="Grass Vector Art">
 		</div>
 	</section>
 
-	<section id="products">
-		<div class="main-content">
-			<h1 class="page-title">Products</h1>
+	<section class="products-section">
+		<div>
 			<div class="filter-bar">
 				<div class="filters">
-					<span>Filter:</span>
-					<div id="myMultiselect" class="multiselect">
-						<div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
-							<span id="selectedFilterText">Nothing is selected</span>
+					<button
+						type="button"
+						id="filters-open-btn"
+						class="filters-trigger popup-box"
+						aria-expanded="false"
+						aria-controls="filters-modal"
+					>
+						<span class="filters-trigger-label">Filters</span>
+						<div class="filters-hp" aria-label="Filter selections">
+							<span class="filters-hp-label">HP</span>
+							<div class="filters-hp-bar">
+								<div class="filters-hp-fill" id="filters-hp-fill"></div>
+							</div>
+							<span class="filters-hp-count" id="filters-hp-count">0 / 6</span>
 						</div>
-						<div id="mySelectOptions">
-							<label for="sort-asc">
-								<input type="checkbox" id="sort-asc" value="name-asc" data-group="sort">
-								Alphabetize (A - Z)
-							</label>
-							<label for="sort-desc">
-								<input type="checkbox" id="sort-desc" value="name-desc" data-group="sort">
-								Alphabetize (Z - A)
-							</label>
-							<label for="price-low">
-								<input type="checkbox" id="price-low" value="price-asc" data-group="sort">
-								Price (Low - High)
-							</label>
-							<label for="price-high">
-								<input type="checkbox" id="price-high" value="price-desc" data-group="sort">
-								Price (High - Low)
-							</label>
-						</div>
-					</div>
+					</button>
+
+					<form id="home-search-form" class="filters-search popup-box" role="search" aria-label="Search products">
+						<input
+							id="home-search-input"
+							class="filters-search-input"
+							type="search"
+							inputmode="search"
+							autocomplete="off"
+							maxlength="50"
+							placeholder="Search cards"
+							aria-label="Search cards"
+						/>
+						<button
+							type="button"
+							id="home-search-clear-btn"
+							class="filters-search-clear"
+							aria-label="Clear search"
+							hidden
+						>
+							Clear
+						</button>
+						<button type="submit" id="home-search-btn" class="filters-search-btn" aria-label="Search">
+							Search
+						</button>
+					</form>
 				</div>
 				<div class="item-count" id="item-count">0 items</div>
 			</div>
 		</div>
-		<div id="product-gallery" class="product-gallery"></div>
+		<div
+			id="product-gallery"
+			class="product-gallery"
+			role="list"
+			aria-label="Product catalog"
+			aria-busy="true"
+		></div>
 	</section>
+
+	<div id="filters-modal" class="filters-modal" hidden>
+		<div class="filters-modal-backdrop" data-dismiss-filters aria-hidden="true"></div>
+		<div
+			class="filters-modal-panel popup-box"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="filters-modal-title"
+		>
+			<header class="filters-modal-header">
+				<h2 id="filters-modal-title" class="filters-modal-title">Filters</h2>
+				<button type="button" id="filters-modal-close" class="filters-modal-close" aria-label="Close filters">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</header>
+			<div class="filters-modal-body">
+				<section class="filters-used" aria-live="polite">
+					<p class="filters-used-heading">You used</p>
+					<div id="filters-used-tags" class="filters-used-tags"></div>
+				</section>
+				<div id="filters-options" class="filters-options">
+					<p class="filters-group-heading">Sort</p>
+					<label for="sort-asc" class="filter-option">
+						<input type="checkbox" id="sort-asc" value="name-asc" data-group="sort" data-label="Alphabetize (A - Z)">
+						<span>Alphabetize (A - Z)</span>
+					</label>
+					<label for="sort-desc" class="filter-option">
+						<input type="checkbox" id="sort-desc" value="name-desc" data-group="sort" data-label="Alphabetize (Z - A)">
+						<span>Alphabetize (Z - A)</span>
+					</label>
+					<label for="price-low" class="filter-option">
+						<input type="checkbox" id="price-low" value="price-asc" data-group="sort" data-label="Price (Low - High)">
+						<span>Price (Low - High)</span>
+					</label>
+					<label for="price-high" class="filter-option">
+						<input type="checkbox" id="price-high" value="price-desc" data-group="sort" data-label="Price (High - Low)">
+						<span>Price (High - Low)</span>
+					</label>
+					<p class="filters-group-heading">Availability</p>
+					<label for="in-stock" class="filter-option">
+						<input type="checkbox" id="in-stock" value="in-stock" data-group="availability" data-label="In stock">
+						<span>In stock</span>
+					</label>
+					<label for="out-of-stock" class="filter-option">
+						<input type="checkbox" id="out-of-stock" value="out-of-stock" data-group="availability" data-label="Out of stock">
+						<span>Out of stock</span>
+					</label>
+				</div>
+			</div>
+			<footer class="filters-modal-footer">
+				<button type="button" id="filters-show-results" class="filters-show-results btn-primary">
+					Show results
+				</button>
+			</footer>
+		</div>
+	</div>
+
+	<div id="product-preview-modal" class="product-preview" hidden>
+		<div class="product-preview__backdrop" data-dismiss aria-hidden="true"></div>
+		<div class="product-preview__dialog" role="dialog" aria-modal="true" aria-label="Enlarged card">
+			<button type="button" id="product-preview-close" class="product-preview__close" aria-label="Close preview">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<img id="product-preview-img" class="product-preview__img" src="" alt="">
+		</div>
+	</div>
+
+	<button
+		type="button"
+		id="scroll-to-catalog-btn"
+		class="scroll-to-catalog popup-box"
+		hidden
+		aria-label="Back to filters and search"
+	>
+		<i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+	</button>
+
+	<footer id="site-footer"></footer>
 </body>
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Login</title>
+	<meta name="description" content="Log in to your Mew's Truck account.">
+	<link rel="icon" href="../../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../../assets/styles/layout.css">
+	<link rel="stylesheet" href="../../assets/styles/components.css">
+	<link rel="stylesheet" href="../../assets/styles/forms.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../../assets/scripts/config/site-config.js"></script>
+	<script src="../../assets/scripts/core/site-scroll-restore.js"></script>
+	<script src="../../assets/scripts/config/supabase-config.js"></script>
+	<script src="../../assets/scripts/core/site-modal.js"></script>
+	<script src="../../assets/scripts/core/site-message.js"></script>
+	<script src="../../assets/scripts/core/mew-api.js"></script>
+	<script type="module" src="../../assets/scripts/config/supabase-init.js"></script>
+	<script src="../../assets/scripts/core/site-header.js" defer></script>
+	<script src="../../assets/scripts/core/site-footer.js" defer></script>
+	<script src="../../assets/scripts/auth/auth-form-feedback.js" defer></script>
+	<script src="../../assets/scripts/pages/login.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
+
+	<div class="popup-box popup-box--hero popup-box--auth">
+		<h3>Log in</h3>
+		<form class="auth-form login-form">
+			<div class="form-group">
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username" placeholder="Enter your username" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password" placeholder="Enter your password" required>
+			</div>
+			<div class="form-buttons">
+				<button type="submit" class="btn-primary">Log in</button>
+			</div>
+			<p class="auth-switch">
+				Don't have an account?
+				<a href="../signup/">Sign up</a>
+			</p>
+		</form>
+	</div>
+
+	<footer id="site-footer"></footer>
+</body>
+</html>

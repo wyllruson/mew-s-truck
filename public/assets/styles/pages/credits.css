@@ -1,0 +1,178 @@
+#credit {
+	height: 100dvh;
+	width: 100%;
+	background-image: url('../../images/ui/credits-background.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+
+.credit-wrapper {
+	position: relative;
+	top: 5rem;
+}
+
+.credit-card {
+	position: relative;
+	top: 2rem;
+}
+
+.blank {
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 30rem;
+}
+
+.card-logo {
+	position: absolute;
+	top: 10rem;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 10rem;
+}
+
+.credits-section {
+	position: relative;
+	width: 24rem;
+	margin: 0 auto;
+	text-align: left;
+	font-size: 1rem;
+	color: #000;
+}
+
+.credits-section h3 {
+	position: relative;
+	top: 4.6rem;
+	left: 2.5rem;
+	font-size: 2rem;
+	text-align: left;
+}
+
+.credits-section ul {
+	list-style-type: none;
+	position: relative;
+	top: 24rem;
+	max-height: 10rem;
+	overflow: auto;
+}
+
+.credits-section li {
+	margin: 0 0 1rem;
+}
+
+.credits-section a {
+	color: #000;
+	text-decoration: none;
+	font-weight: bold;
+	transition: color 0.3s ease;
+}
+
+.credits-section a:hover {
+	color: darkorchid;
+}
+
+@media (max-width: 48rem) {
+	#credit {
+		height: auto;
+		min-height: 100dvh;
+		overflow-x: hidden;
+		overflow-y: auto;
+		padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+	}
+
+	.credit-wrapper {
+		container-type: inline-size;
+		position: relative;
+		top: calc(var(--site-header-offset) + 1.5rem);
+		width: min(30rem, 78vw);
+		margin-inline: auto;
+		padding-bottom: 2rem;
+	}
+
+	.credit-card {
+		position: relative;
+		top: 0;
+		width: 100%;
+	}
+
+	.blank {
+		position: relative;
+		top: 0;
+		left: 0;
+		transform: none;
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.card-logo {
+		top: 24%;
+		width: 33.33cqi;
+		max-width: none;
+	}
+
+	.credits-section {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		font-size: 3.33cqi;
+	}
+
+	.credits-section h3 {
+		position: absolute;
+		top: 11cqi;
+		left: 8.33cqi;
+		right: 8.33cqi;
+		margin: 0;
+		font-size: 6.67cqi;
+		text-align: left;
+		overflow-wrap: anywhere;
+	}
+
+	.credits-section ul {
+		position: absolute;
+		top: 57.5%;
+		left: 8.33cqi;
+		right: 8.33cqi;
+		max-height: 33cqi;
+		overflow: auto;
+		font-size: 2.92cqi;
+	}
+
+	.credits-section li {
+		margin-bottom: 0.65em;
+		line-height: 1.4;
+	}
+
+	.credits-section a {
+		display: inline;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+}
+
+@media (max-width: 40rem) {
+	#credit {
+		padding-inline: var(--site-gutter-narrow);
+	}
+
+	.credit-wrapper {
+		top: calc(var(--site-header-offset) + 1rem);
+		width: min(26rem, 100%);
+	}
+
+	.credits-section ul {
+		max-height: 36cqi;
+	}
+}
+
+@media (max-width: 26rem) {
+	.credit-wrapper {
+		width: min(22rem, 92vw);
+	}
+}

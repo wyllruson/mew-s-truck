@@ -1,0 +1,328 @@
+.mystery-shop {
+	position: relative;
+	min-height: 100dvh;
+	width: 100%;
+	overflow: hidden;
+}
+
+.mystery-shop::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background-image: url('../../images/ui/mystery-shop-background.gif');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.mystery-shop > .bg-blur {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.mystery-shop .popup-box--hero {
+	background: linear-gradient(155deg, #1a0028 0%, #4a0a5c 48%, #2a0638 100%);
+	--popup-border-color: #ff3de8;
+	--popup-border-inner-color: #c218b5;
+	color: #fce8ff;
+	top: auto;
+	margin-top: calc(var(--site-header-offset) + 4.5rem);
+	margin-inline: auto;
+	margin-bottom: 3rem;
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	align-items: start;
+	column-gap: clamp(1rem, 3vw, 2.5rem);
+	width: 100%;
+	max-width: var(--site-content-max);
+	margin-inline: auto;
+	min-width: 0;
+}
+
+.mystery-card {
+	grid-column: 2;
+	justify-self: center;
+	text-align: center;
+	transition: filter 0.2s ease;
+}
+
+.mystery-card.is-closed {
+	filter: grayscale(1);
+	pointer-events: none;
+}
+
+.mystery-card.is-closed .mystery-card-face {
+	filter: grayscale(1);
+}
+
+.mystery-card.is-closed p {
+	color: #8a8a8a;
+	text-shadow: none;
+}
+
+.mystery-card .mystery-card-face {
+	width: clamp(13rem, 14vw, 15rem);
+	margin: 0 auto;
+}
+
+.mystery-card p {
+	font-size: clamp(1.35rem, 3.5vw, 2rem);
+	margin: clamp(1rem, 3vw, 2rem);
+	text-align: center;
+	color: gold;
+	font-weight: bold;
+	/* 3D font effect with gold and #3c5aa6 blue, shadow leans left */
+	text-shadow:
+		-1px 1px 0 #3c5aa6,
+		-2px 2px 0 #3c5aa6,
+		-3px 3px 0 #3c5aa6,
+		-4px 4px 0 #3c5aa6,
+		0 0 10px #3c5aa6,
+		0 0 1px gold;
+}
+
+.mystery-card-title {
+	font-family: var(--font-family-site, var(--font-family-display));
+}
+
+.mystery-shop button {
+	margin-top: 1rem;
+	padding: 0.625rem 1.25rem;
+	font-size: clamp(0.9rem, 2vw, 1rem);
+	font-family: var(--font-family-site, var(--font-family-display));
+	color: #000000;
+	background-color: gold;
+	border: 2px solid goldenrod;
+	border-radius: 3rem;
+	cursor: pointer;
+	transition: filter 0.2s ease, background-color 0.2s ease;
+}
+
+.mystery-shop button:hover {
+	filter: brightness(1.15);
+}
+
+.mystery-shop button:disabled {
+	cursor: not-allowed;
+	filter: grayscale(0.4);
+}
+
+.ad-box {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-start;
+	justify-content: center;
+	min-width: 0;
+	max-width: 100%;
+	font-size: 0.5rem;
+	overflow: hidden;
+}
+
+.ad-box--left {
+	grid-column: 1;
+	justify-self: start;
+}
+
+.ad-box--right {
+	grid-column: 3;
+	justify-self: end;
+	align-items: flex-end;
+}
+
+.ad-box img {
+	display: block;
+	width: auto;
+	max-width: min(20rem, 100%);
+	min-width: 0;
+	max-height: 65vh;
+	height: auto;
+}
+
+@media (max-width: 90rem) {
+	.mystery-card .mystery-card-face {
+		width: clamp(10rem, 18vw, 13rem);
+	}
+
+	.ad-box img {
+		max-height: 60vh;
+	}
+}
+
+@media (max-width: 48rem) {
+	.layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 2rem;
+	}
+
+	.ad-box--left {
+		order: 1;
+	}
+
+	.ad-box--right {
+		order: 2;
+	}
+
+	.mystery-card {
+		order: 3;
+	}
+
+	.ad-box--left,
+	.ad-box--right {
+		justify-self: center;
+		align-items: center;
+	}
+
+	.mystery-shop .popup-box--hero {
+		margin-bottom: 2rem;
+	}
+
+	.ad-box img {
+		max-height: 45vh;
+	}
+}
+
+@media (max-width: 40rem) {
+	.mystery-card .mystery-card-face {
+		width: clamp(10rem, 52vw, 13rem);
+	}
+
+	.mystery-card p {
+		font-size: clamp(1.15rem, 5vw, 1.65rem);
+		margin: 1rem;
+		overflow-wrap: anywhere;
+	}
+
+	.mystery-shop button {
+		min-height: 2.75rem;
+		padding: 0.75rem 1.5rem;
+	}
+
+	.mystery-confirmation {
+		padding: 1rem;
+		place-items: center;
+	}
+
+	.mystery-confirmation__panel {
+		width: min(32rem, 100%);
+		padding: 1.5rem 1.25rem;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.mystery-confirmation__panel::before {
+		border-radius: var(--popup-radius);
+	}
+
+	.mystery-confirmation__btn {
+		min-height: 2.75rem;
+	}
+}
+
+@media (max-width: 26rem) {
+	.layout {
+		row-gap: 1.25rem;
+	}
+
+	.mystery-shop .popup-box--hero {
+		margin-bottom: 1.5rem;
+	}
+}
+
+.mystery-confirmation[hidden] {
+	display: none;
+}
+
+.mystery-confirmation {
+	position: fixed;
+	inset: 0;
+	z-index: 1200;
+	display: grid;
+	place-items: center;
+	padding: 1.5rem;
+}
+
+.mystery-confirmation__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.68);
+}
+
+.mystery-confirmation__panel {
+	position: relative;
+	width: min(32rem, 100%);
+	margin: 0;
+	padding: 2rem;
+	background: linear-gradient(160deg, #120328 0%, #2a0f3b 52%, #0f1226 100%);
+	--popup-border-color: #ffd54a;
+	--popup-border-inner-color: #c9a020;
+	box-shadow: 0 0 40px rgba(255, 219, 100, 0.45);
+	color: #fdf7e3;
+	text-align: center;
+	font-family: var(--font-family-site, var(--font-family-display));
+}
+
+.mystery-confirmation__panel.is-warning {
+	--popup-border-color: #ff9b8a;
+	--popup-border-inner-color: #c45a48;
+	box-shadow: 0 0 40px rgba(255, 132, 103, 0.35);
+}
+
+.mystery-confirmation__panel h2 { 
+	font-size: 1.45rem;
+	color: #fff1be;
+	text-shadow: 0 0 12px rgba(255, 216, 101, 0.65);
+}
+
+.mystery-confirmation__message {
+	margin: 0;
+	font-family: var(--font-family-site, var(--font-family-display));
+	font-size: 0.95rem;
+	line-height: 1.55;
+	color: #f7f1db;
+}
+
+.mystery-confirmation__actions {
+	margin-top: 1.4rem;
+	display: flex;
+	justify-content: center;
+	gap: 0.8rem;
+	flex-wrap: wrap;
+}
+
+.mystery-confirmation__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 9.5rem;
+	padding: 0.65rem 1rem;
+	border-radius: 999px;
+	border: 2px solid #d8a11a;
+	font-size: 0.78rem;
+	font-family: var(--font-family-site, var(--font-family-display));
+	text-decoration: none;
+	cursor: pointer;
+	transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.mystery-confirmation__btn:hover {
+	filter: brightness(1.1);
+	transform: translateY(-1px);
+}
+
+.mystery-confirmation__btn--primary {
+	background: linear-gradient(180deg, #ffde6b 0%, #efad24 100%);
+	color: #1a1122;
+}
+
+.mystery-confirmation__btn--ghost {
+	background: rgba(255, 255, 255, 0.06);
+	color: #fdf7e3;
+}

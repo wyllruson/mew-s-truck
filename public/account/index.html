@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Account</title>
+	<meta name="description" content="Manage your Mew's Truck account and order history.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../assets/styles/layout.css">
+	<link rel="stylesheet" href="../assets/styles/components.css">
+	<link rel="stylesheet" href="../assets/styles/pages/account.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../assets/scripts/config/site-config.js"></script>
+	<script src="../assets/scripts/core/site-scroll-restore.js"></script>
+	<script src="../assets/scripts/config/supabase-config.js"></script>
+	<script src="../assets/scripts/core/site-modal.js"></script>
+	<script src="../assets/scripts/core/site-message.js"></script>
+	<script src="../assets/scripts/core/mew-api.js"></script>
+	<script type="module" src="../assets/scripts/config/supabase-init.js"></script>
+	<script src="../assets/scripts/core/site-header.js" defer></script>
+	<script src="../assets/scripts/core/site-footer.js" defer></script>
+	<script src="../assets/scripts/pages/account.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
+
+	<main class="account-page">
+		<div class="account-page__inner">
+			<header class="account-page__header">
+				<h1 class="account-page__title">Your Account</h1>
+				<p class="account-page__subtitle" id="account-greeting" aria-live="polite">Loading your profile…</p>
+			</header>
+
+			<div class="account-layout">
+				<aside class="account-profile popup-box" aria-labelledby="account-profile-heading">
+					<div class="account-profile__badge" aria-hidden="true">
+						<i class="fa-solid fa-user"></i>
+					</div>
+					<h2 id="account-profile-heading" class="account-profile__heading">Profile</h2>
+					<dl class="account-profile__details">
+						<div class="account-profile__row">
+							<dt>Username</dt>
+							<dd id="username">—</dd>
+						</div>
+						<div class="account-profile__row">
+							<dt>Email</dt>
+							<dd id="email">—</dd>
+						</div>
+					</dl>
+					<button id="logout-btn" type="button" class="account-logout-btn btn-secondary">
+						<i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+						Log out
+					</button>
+				</aside>
+
+				<section class="account-orders popup-box" aria-labelledby="account-orders-heading">
+					<div class="account-orders__top">
+						<h2 id="account-orders-heading" class="account-orders__heading">Order history</h2>
+						<p class="account-orders__hint">Your most recent purchases appear first.</p>
+					</div>
+
+					<div
+						id="orders-error"
+						class="account-orders__error site-notice site-notice--error popup-box"
+						role="alert"
+						hidden
+					></div>
+
+					<div id="orders-list" class="account-orders__list" role="list"></div>
+
+					<div class="account-orders__empty" id="orders-empty" hidden>
+						<div class="account-orders__empty-icon" aria-hidden="true">
+							<i class="fa-solid fa-receipt"></i>
+						</div>
+						<p class="account-orders__empty-title">No orders yet</p>
+						<p class="account-orders__empty-text">When you check out, your purchases will show up here.</p>
+						<a class="account-orders__empty-cta btn-primary" href="../">Shop cards</a>
+					</div>
+
+					<button id="load-more-btn" type="button" class="account-load-more btn-primary" hidden>
+						Load more orders
+					</button>
+				</section>
+			</div>
+		</div>
+	</main>
+
+	<div id="account-preview-modal" class="account-preview" hidden>
+		<div class="account-preview__backdrop" data-dismiss-account-preview aria-hidden="true"></div>
+		<div class="account-preview__dialog" role="dialog" aria-modal="true" aria-labelledby="account-preview-title">
+			<h2 id="account-preview-title" class="account-preview__title-visually-hidden">Enlarged card</h2>
+			<button type="button" id="account-preview-close" class="account-preview__close" aria-label="Close preview">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<img id="account-preview-img" class="account-preview__img" src="" alt="">
+			<div id="account-preview-mystery" class="account-preview__img mystery-card-face is-preview-hidden" role="img" aria-label=""></div>
+		</div>
+	</div>
+
+	<footer id="site-footer"></footer>
+</body>
+</html>

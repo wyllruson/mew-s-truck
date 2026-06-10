@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Service</title>
+	<meta name="description" content="FAQ and contact form for Mew's Truck.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../assets/styles/layout.css">
+	<link rel="stylesheet" href="../assets/styles/components.css">
+	<link rel="stylesheet" href="../assets/styles/forms.css">
+	<link rel="stylesheet" href="../assets/styles/pages/service.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../assets/scripts/config/site-config.js"></script>
+	<script src="../assets/scripts/core/site-scroll-restore.js"></script>
+	<script src="../assets/scripts/config/supabase-config.js"></script>
+	<script src="../assets/scripts/core/site-modal.js"></script>
+	<script src="../assets/scripts/core/site-message.js"></script>
+	<script src="../assets/scripts/core/mew-api.js"></script>
+	<script type="module" src="../assets/scripts/config/supabase-init.js"></script>
+	<script src="../assets/scripts/core/site-header.js" defer></script>
+	<script src="../assets/scripts/core/site-footer.js" defer></script>
+	<script src="../assets/scripts/auth/auth-form-feedback.js" defer></script>
+	<script src="../assets/scripts/pages/service.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
+
+	<main class="service-page">
+		<div class="service-page__inner">
+			<header class="service-page__header">
+				<h1 class="service-page__title">Customer Service</h1>
+				<p class="service-page__subtitle">Find answers below or send us a message — we usually reply within 1-3 business days.</p>
+			</header>
+
+			<div class="service-layout">
+				<section class="service-faq popup-box" aria-labelledby="faq-heading">
+					<h2 id="faq-heading" class="service-panel__title">FAQ</h2>
+
+					<label class="service-search" for="search-input">
+						<span class="visually-hidden">Search FAQs</span>
+						<i class="fa-solid fa-magnifying-glass service-search__icon" aria-hidden="true"></i>
+						<input type="search" id="search-input" placeholder="Search questions…" autocomplete="off">
+					</label>
+
+					<div class="faq-list" id="faq-list">
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-1" id="faq-q-1">
+								Do you offer refunds?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-1" role="region" aria-labelledby="faq-q-1" hidden>
+								<p>Yes, we offer a full 30-day refund for any item purchased. Please keep your receipt as proof of purchase.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-2" id="faq-q-2">
+								Do you sell the latest card sets?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-2" role="region" aria-labelledby="faq-q-2" hidden>
+								<p>No, we often do not sell the latest sets. We focus on older and more collectible card sets.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-3" id="faq-q-3">
+								Are all products officially licensed by Pokémon?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-3" role="region" aria-labelledby="faq-q-3" hidden>
+								<p>Yes, all items we sell are officially licensed by The Pokémon Company.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-4" id="faq-q-4">
+								How long does shipping take?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-4" role="region" aria-labelledby="faq-q-4" hidden>
+								<p>Shipping typically takes 5–7 business days within the United States.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-5" id="faq-q-5">
+								Do you ship internationally?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-5" role="region" aria-labelledby="faq-q-5" hidden>
+								<p>Yes, we ship to most countries worldwide. Shipping costs and times vary by location.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-6" id="faq-q-6">
+								Do you buy Pokémon cards from collectors?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-6" role="region" aria-labelledby="faq-q-6" hidden>
+								<p>Yes, we occasionally buy cards from collectors. Please contact us with details and photos.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-7" id="faq-q-7">
+								What is your return policy?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-7" role="region" aria-labelledby="faq-q-7" hidden>
+								<p>Items must be returned within 30 days in their original condition to be eligible for a refund or exchange.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-8" id="faq-q-8">
+								Do you authenticate rare cards?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-8" role="region" aria-labelledby="faq-q-8" hidden>
+								<p>Yes, we offer card authentication services for an additional fee. Contact us for more details.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-9" id="faq-q-9">
+								Can I preorder upcoming card sets?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-9" role="region" aria-labelledby="faq-q-9" hidden>
+								<p>No, we do not currently offer preorders for upcoming sets.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-10" id="faq-q-10">
+								Are the mystery packs worth the price?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-10" role="region" aria-labelledby="faq-q-10" hidden>
+								<p>Mystery packs offer great value, especially for collectors looking to add variety to their collection.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-11" id="faq-q-11">
+								How can I contact customer support?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-11" role="region" aria-labelledby="faq-q-11" hidden>
+								<p>You can contact us via the contact form on this page</a>.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-12" id="faq-q-12">
+								Can I change my order after placing it?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-12" role="region" aria-labelledby="faq-q-12" hidden>
+								<p>Unfortunately, once an order is placed, we are unable to make changes.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-13" id="faq-q-13">
+								How can I track my order?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-13" role="region" aria-labelledby="faq-q-13" hidden>
+								<p>You will receive a tracking number via email once your order has been shipped.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-14" id="faq-q-14">
+								Is my payment information secure?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-14" role="region" aria-labelledby="faq-q-14" hidden>
+								<p>Yes, we use SSL encryption to ensure your payment details are secure.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-15" id="faq-q-15">
+								Do you offer gift cards?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-15" role="region" aria-labelledby="faq-q-15" hidden>
+								<p>Yes, we offer digital gift cards in various denominations on our website.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-16" id="faq-q-16">
+								What should I do if I receive a damaged item?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-16" role="region" aria-labelledby="faq-q-16" hidden>
+								<p>Contact our customer service team within 7 days of receiving the product.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-17" id="faq-q-17">
+								Can I cancel my order?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-17" role="region" aria-labelledby="faq-q-17" hidden>
+								<p>Orders can be canceled within 24 hours of purchase.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-18" id="faq-q-18">
+								Do you offer discounts for bulk orders?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-18" role="region" aria-labelledby="faq-q-18" hidden>
+								<p>Yes, we offer discounts on bulk orders. Please contact our sales team.</p>
+							</div>
+						</div>
+						<div class="faq-item">
+							<button type="button" class="faq-item__question" aria-expanded="false" aria-controls="faq-19" id="faq-q-19">
+								Do you offer free shipping?
+								<i class="fa-solid fa-chevron-down faq-item__chevron" aria-hidden="true"></i>
+							</button>
+							<div class="faq-item__answer" id="faq-19" role="region" aria-labelledby="faq-q-19" hidden>
+								<p>We offer free standard shipping on orders over $50 within the continental United States.</p>
+							</div>
+						</div>
+					</div>
+
+					<p class="faq-empty site-notice popup-box" id="faq-empty" hidden>No matching questions found. Try a different search or send us a message. 🔻</p>
+				</section>
+
+				<aside class="service-contact popup-box" aria-labelledby="contact-heading">
+					<h2 id="contact-heading" class="service-panel__title">Contact Us</h2>
+
+					<form class="contact-form auth-form" id="contact-form">
+						<div class="form-group">
+							<label for="name">Name</label>
+							<input type="text" id="name" name="name" placeholder="Your name" required>
+						</div>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input type="email" id="email" name="email" placeholder="you@example.com" required>
+						</div>
+						<div class="form-group">
+							<label for="comments">Message</label>
+							<textarea id="comments" name="comments" rows="6" placeholder="Questions or comments…" required></textarea>
+						</div>
+						<div class="form-buttons">
+							<button type="submit" class="btn-primary">Send message</button>
+						</div>
+					</form>
+				</aside>
+			</div>
+		</div>
+	</main>
+
+	<footer id="site-footer"></footer>
+</body>
+</html>

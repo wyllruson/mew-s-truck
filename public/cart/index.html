@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mew's Truck — Cart</title>
+	<meta name="description" content="View and checkout items in your Mew's Truck cart.">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../assets/styles/layout.css">
+	<link rel="stylesheet" href="../assets/styles/components.css">
+	<link rel="stylesheet" href="../assets/styles/pages/cart.css">
+	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
+	<script src="../assets/scripts/config/site-config.js"></script>
+	<script src="../assets/scripts/core/site-scroll-restore.js"></script>
+	<script src="../assets/scripts/config/supabase-config.js"></script>
+	<script src="../assets/scripts/core/site-modal.js"></script>
+	<script src="../assets/scripts/core/site-message.js"></script>
+	<script src="../assets/scripts/core/mew-api.js"></script>
+	<script src="../assets/scripts/core/qty-stepper.js"></script>
+	<script type="module" src="../assets/scripts/config/supabase-init.js"></script>
+	<script src="../assets/scripts/core/site-header.js" defer></script>
+	<script src="../assets/scripts/core/site-footer.js" defer></script>
+	<script src="../assets/scripts/pages/cart.js" defer></script>
+</head>
+<body>
+	<header id="site-header"></header>
+
+	<main class="cart-page">
+		<div class="cart-page__inner">
+			<header class="cart-page__header">
+				<h1 class="cart-page__title">Your Cart</h1>
+				<p class="cart-page__count" id="cart-item-count" aria-live="polite"></p>
+			</header>
+
+			<div class="cart-layout">
+				<section class="cart-items-panel popup-box" aria-labelledby="cart-items-heading">
+					<h2 id="cart-items-heading" class="visually-hidden">Cart items</h2>
+					<div class="cart-table" role="list"></div>
+					<div class="cart-empty" id="cart-empty" hidden>
+						<div class="cart-empty__icon" aria-hidden="true">
+							<i class="fa-solid fa-cart-shopping"></i>
+						</div>
+						<p class="cart-empty__title">Your cart is empty</p>
+						<p class="cart-empty__text">Browse the catalog and add cards to get started. 🔻</p>
+						<a class="cart-empty__cta btn-primary" href="../">Shop cards</a>
+					</div>
+				</section>
+
+				<aside class="cart-summary popup-box" aria-labelledby="cart-summary-heading">
+					<h2 id="cart-summary-heading" class="cart-summary__heading">Order summary</h2>
+					<dl class="cart-summary__rows">
+						<div class="cart-summary__row subtotal">
+							<dt>Subtotal</dt>
+							<dd>$0.00</dd>
+						</div>
+					</dl>
+					<p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
+					<button type="button" class="cart-checkout-btn btn-primary" id="cart-checkout-btn">
+						Check out
+					</button>
+					<a class="cart-continue-link" href="../">Continue shopping</a>
+				</aside>
+			</div>
+		</div>
+	</main>
+
+	<div id="cart-order-success" class="cart-order-success" hidden>
+		<div class="cart-order-success__backdrop" data-dismiss-order-success aria-hidden="true"></div>
+		<div
+			class="cart-order-success__panel popup-box"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="cart-order-success-title"
+		>
+			<div class="cart-order-success__icon" aria-hidden="true">
+				<i class="fa-solid fa-circle-check"></i>
+			</div>
+			<h2 id="cart-order-success-title" class="cart-order-success__title">Order placed!</h2>
+			<p class="cart-order-success__lead">
+				Thanks for your purchase. Your cards are on the way — we&apos;ll pack them up soon. 🔻
+			</p>
+			<p class="cart-order-success__order">
+				<span class="cart-order-success__order-label">Order</span>
+				<span id="cart-order-success-id" class="cart-order-success__order-id"></span>
+			</p>
+			<div class="cart-order-success__actions">
+				<a class="cart-order-success__btn btn-primary" href="../account/">View order history</a>
+				<a class="cart-order-success__btn cart-order-success__btn--ghost" href="../">Keep shopping</a>
+			</div>
+			<button type="button" class="cart-order-success__close" data-dismiss-order-success aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	</div>
+
+	<div id="cart-preview-modal" class="cart-preview" hidden>
+		<div class="cart-preview__backdrop" data-dismiss-cart-preview aria-hidden="true"></div>
+		<div class="cart-preview__dialog" role="dialog" aria-modal="true" aria-labelledby="cart-preview-title">
+			<h2 id="cart-preview-title" class="visually-hidden">Enlarged card</h2>
+			<button type="button" id="cart-preview-close" class="cart-preview__close" aria-label="Close preview">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<img id="cart-preview-img" class="cart-preview__img" src="" alt="">
+			<div id="cart-preview-mystery" class="cart-preview__img mystery-card-face is-preview-hidden" role="img" aria-label=""></div>
+		</div>
+	</div>
+
+	<footer id="site-footer"></footer>
+</body>
+</html>

@@ -1,21 +1,19 @@
 {
-  "name": "mewstruck",
+  "name": "mew-s-truck",
   "version": "1.0.0",
   "description": "A demo ecommerce site selling Pokémon trading cards",
+  "private": true,
   "scripts": {
-    "serve": "npx --yes serve public -l 3000",
-    "lint": "eslint public/**/*.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DucksFoLif/mewstruck.git"
+    "setup": "node tools/setup-local.js",
+    "dev": "node tools/setup-local.js && live-server public --port=3000 --host=localhost --open=/",
+    "serve": "node tools/setup-local.js && serve public -l 3000",
+    "start": "npm run serve",
+    "lint": "eslint \"public/assets/scripts/**/*.js\""
   },
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DucksFoLif/mewstruck/issues"
-  },
-  "homepage": "https://github.com/DucksFoLif/mewstruck#readme",
   "devDependencies": {
-    "eslint": "^8.57.1"
+    "eslint": "^8.57.1",
+    "live-server": "^1.2.2",
+    "serve": "^14.2.4"
   }
 }

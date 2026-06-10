@@ -1,9 +1,13 @@
 node_modules/
 .env
 .env.*
+!.env.example
 
-# Supabase keys (copy from public/js/supabase-config.example.js)
-public/js/supabase-config.js
+# Generated from .env by npm run setup
+public/assets/scripts/config/supabase-config.js
+
+# Local Pillow vendor for image tools
+tools/.image-deps/
 
 # OS metadata
 .DS_Store
@@ -12,3 +16,6 @@ public/js/supabase-config.js
 # Logs and caches
 *.log
 .eslintcache
+.tmp-pillow/
+__pycache__/
+*.pyc

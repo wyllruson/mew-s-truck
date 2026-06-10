@@ -28,7 +28,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          cat > public/js/supabase-config.js <<EOF
+          cat > public/assets/scripts/config/supabase-config.js <<EOF
           window.MEW_SUPABASE = {
             url: '${SUPABASE_URL}',
             anonKey: '${SUPABASE_ANON_KEY}',
@@ -40,7 +40,7 @@ jobs:
           BASE_PATH="/${{ github.event.repository.name }}"
           node -e "
           const fs = require('fs');
-          const file = 'public/js/site-config.js';
+          const file = 'public/assets/scripts/config/site-config.js';
           let src = fs.readFileSync(file, 'utf8');
           src = src.replace(/basePath:\\s*'[^']*'/, \"basePath: '${BASE_PATH}'\");
           fs.writeFileSync(file, src);

@@ -13,17 +13,21 @@
   },
   "overrides": [
     {
-      "files": ["public/js/supabase-init.js"],
+      "files": ["public/assets/scripts/config/supabase-init.js"],
       "parserOptions": {
         "sourceType": "module"
       }
     },
     {
-      "files": ["public/**/*.js"],
+      "files": ["public/assets/scripts/**/*.js"],
       "globals": {
         "mewPath": "readonly",
         "MewApi": "readonly",
+        "MewMessage": "readonly",
+        "AuthFormFeedback": "readonly",
+        "MewQtyStepper": "readonly",
         "MEW_SITE": "writable",
+        "MEW_PATHS": "readonly",
         "MEW_SUPABASE": "readonly"
       }
     }

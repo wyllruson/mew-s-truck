@@ -1,6 +1,6 @@
 # Mew's Truck
 
-A demo e-commerce site for Pokémon Boundaries Crossed trading cards. The frontend is static HTML/CSS/JavaScript, hosted on **GitHub Pages**, with **Supabase** (free tier) for auth, database, and server-side logic via Postgres RPCs.
+A demo e-commerce site for Pokémon trading cards. The frontend is static HTML/CSS/JavaScript, hosted on **GitHub Pages**, with **Supabase** (free tier) for auth, database, and server-side logic via Postgres RPCs.
 
 ## Features
 
@@ -23,23 +23,24 @@ GitHub Pages       →  serves static files only
 ### 1. Supabase project
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. In **SQL Editor**, run (in order):
-   - `database/supabase_schema.sql`
-   - `database/supabase_seed.sql`
+2. In **SQL Editor**, run (in order — both scripts are safe to re-run):
+   - `database/schema.sql` — structure, legacy table/column migrations, RPCs, RLS
+   - `database/seed.sql` — catalog data (upserts; preserves carts and orders)
 3. **Authentication → Providers → Email**: turn off **Confirm email** for the simplest demo flow.
 4. **Authentication → URL configuration**: add your site URL(s), e.g.
    - `http://localhost:3000`
    - `https://YOUR_USER.github.io/YOUR_REPO/`
 
-### 2. Local config
+### 2. Local environment
 
 ```bash
-cp public/js/supabase-config.example.js public/js/supabase-config.js
+npm install
+npm run setup
 ```
 
-Edit `public/js/supabase-config.js` with your project **URL** and **anon public** key (Dashboard → Project Settings → API).
+On first run, `setup` creates `.env` from `.env.example`. Edit `.env` with your project **URL** and **anon public** key (Dashboard → Project Settings → API), then run `npm run setup` again (or start dev — setup runs automatically).
 
-For GitHub **project** sites (`username.github.io/repo-name/`), set `basePath` in `public/js/site-config.js`:
+For GitHub **project** sites (`username.github.io/repo-name/`), set `basePath` in `public/assets/scripts/config/site-config.js`:
 
 ```js
 window.MEW_SITE = {
@@ -47,15 +48,21 @@ window.MEW_SITE = {
 };
 ```
 
-Leave `basePath` as `''` for local `npm run serve` or a custom domain at the site root.
+Leave `basePath` as `''` for local dev or a custom domain at the site root.
 
 ### 3. Run locally
 
 ```bash
-npm run serve
+npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Opens [http://localhost:3000](http://localhost:3000) with live reload while you edit CSS/JS/HTML.
+
+Production-like preview (no auto-reload):
+
+```bash
+npm run serve
+```
 
 ## Deploy to GitHub Pages
 
@@ -69,28 +76,45 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```
 mew-s-truck/
-├── .github/workflows/           # GitHub Pages deploy (Supabase config injection)
+├── .env.example                 # Copy → .env for local Supabase keys
+├── .github/workflows/           # GitHub Pages deploy
+├── database/
+│   ├── schema.sql               # Tables, RLS, RPCs (run in Supabase)
+│   └── seed.sql                 # Card catalog data
 ├── public/                      # Static site (GitHub Pages root)
-│   ├── css/                     # layout, components, forms, home
-│   ├── js/                      # Supabase client, site config, shared helpers
-│   ├── account/                 # Login, signup, dashboard
+│   ├── index.html               # Home / catalog
+│   ├── assets/
+│   │   ├── styles/
+│   │   │   ├── layout.css       # Global layout
+│   │   │   ├── components.css   # Shared UI components
+│   │   │   ├── forms.css        # Form styles
+│   │   │   └── pages/           # Page-specific CSS
+│   │   ├── scripts/
+│   │   │   ├── config/          # site-config, supabase client
+│   │   │   ├── core/            # header, footer, API helpers
+│   │   │   ├── auth/            # shared auth UI feedback
+│   │   │   └── pages/           # Page-specific JavaScript
+│   │   └── images/              # catalog sets, UI art, placeholder
+│   ├── about/                   # index.html only
+│   ├── account/                 # dashboard, login/, signup/
 │   ├── cart/
-│   ├── mystery/
-│   ├── about/
-│   ├── service/
 │   ├── credits/
-│   └── media/
-└── database/
-    ├── supabase_schema.sql      # Tables, RLS, RPCs (run in Supabase)
-    └── supabase_seed.sql        # Card catalog data
+│   ├── mystery/
+│   └── service/
+└── tools/                       # Local setup
+    ├── setup-local.js
+    ├── write-supabase-config.js
 ```
 
 ## Scripts
 
 | Command           | Description                                      |
 |-------------------|--------------------------------------------------|
-| `npm run serve`   | Preview static site on port 3000                 |
-| `npm run lint`    | ESLint on `public/**/*.js`                       |
+| `npm run setup`   | Create `.env` (first time) and generate Supabase config |
+| `npm run dev`     | Local dev server with live reload (port 3000)    |
+| `npm run serve`   | Static preview without live reload (port 3000)   |
+| `npm start`       | Alias for `npm run serve`                        |
+| `npm run lint`    | ESLint on shared and page JavaScript             |
 
 ## License
 
