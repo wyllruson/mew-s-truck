@@ -14,7 +14,7 @@
 
 .account-page__title {
 	font-family: var(--font-family-site, var(--font-family-display));
-	font-size: clamp(1.35rem, 3vw, 1.85rem);
+	font-size: 1.85rem;
 	font-weight: 400;
 	color: #0a2a4a;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -329,6 +329,45 @@
 	display: none;
 }
 
+@media (max-width: 90rem) {
+	.account-layout {
+		grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr);
+		gap: 1.25rem;
+	}
+
+	.account-profile.popup-box,
+	.account-orders.popup-box {
+		padding: 1.15rem 1.25rem;
+	}
+
+	.account-order {
+		padding: 0.95rem 1rem;
+	}
+}
+
+@media (max-width: 64rem) {
+	.account-page {
+		padding-top: calc(var(--site-header-offset) + 1.5rem);
+	}
+
+	.account-layout {
+		grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
+		gap: 1.25rem;
+	}
+}
+
+@media (max-width: 56.25rem) {
+	.account-profile.popup-box,
+	.account-orders.popup-box {
+		--popup-border-outer: 0.75rem;
+		--popup-border-inner: 0.225rem;
+	}
+
+	.account-layout {
+		grid-template-columns: 1fr;
+	}
+}
+
 @media (max-width: 48rem) {
 	.account-order__item-name,
 	.account-order__item-meta,
@@ -337,8 +376,8 @@
 		word-break: break-word;
 	}
 
-	.account-layout {
-		grid-template-columns: 1fr;
+	.account-page__title {
+		font-size: 1.85rem;
 	}
 
 	.account-profile {
@@ -383,12 +422,15 @@
 		flex-direction: column;
 		align-items: flex-start;
 	}
+
+	.account-order {
+		min-width: 0;
+	}
 }
 
 @media (max-width: 40rem) {
 	.account-page {
 		padding-inline: var(--site-gutter-narrow);
-		padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
 	}
 
 	.account-profile.popup-box,
@@ -425,6 +467,13 @@
 
 	.account-load-more {
 		min-height: 2.75rem;
+	}
+
+	.account-orders__empty-cta {
+		min-height: 2.75rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 }
 
@@ -487,7 +536,7 @@ body.account-preview-open {
 	width: auto;
 	height: auto;
 	max-width: min(92vw, 32rem);
-	max-height: min(92dvh, 44rem);
+	max-height: 44rem;
 	object-fit: contain;
 	border-radius: var(--card-corner-x) / var(--card-corner-y);
 	clip-path: inset(0.6% round var(--card-corner-x) / var(--card-corner-y));
@@ -547,14 +596,14 @@ body.account-preview-open {
 @media (max-width: 90rem) {
 	.account-preview__img {
 		max-width: min(92vw, 28rem);
-		max-height: min(92dvh, 40rem);
+		max-height: 40rem;
 	}
 }
 
 @media (max-width: 40rem) {
 	.account-preview__img {
 		max-width: min(96vw, 28rem);
-		max-height: min(88dvh, 40rem);
+		max-height: 40rem;
 	}
 
 	.account-preview__close {

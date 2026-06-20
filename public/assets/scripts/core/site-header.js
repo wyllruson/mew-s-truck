@@ -4,6 +4,8 @@ const NAV_LINKS = [
   { href: '/about/', label: 'About', key: 'about' },
 ];
 
+let siteHeaderVisualStateOverride = null;
+
 function normalizeSitePath(pathname) {
   const base = (window.MEW_SITE?.basePath || '').replace(/\/$/, '');
   let path = pathname || '/';
@@ -36,8 +38,134 @@ function renderNavLinks() {
   }).join('');
 }
 
+function captureSiteHeaderVisualState() {
+  const header = document.getElementById('site-header');
+  if (!header) {
+    return null;
+  }
+
+  const accountLink = document.getElementById('login-link');
+  const cartLink = header.querySelector('.cart-link');
+  const cartBadge = document.getElementById('cart-badge');
+  const demoBannerTrack = header.querySelector('.demo-banner__track');
+
+  return {
+    mobileNavOpen: header.classList.contains('nav-open'),
+    demoBannerTrack: demoBannerTrack
+      ? {
+          transform: window.getComputedStyle(demoBannerTrack).transform,
+        }
+      : null,
+    accountLink: accountLink
+      ? {
+          href: accountLink.getAttribute('href') || '',
+          className: accountLink.className,
+          ariaLabel: accountLink.getAttribute('aria-label') || '',
+          html: accountLink.innerHTML,
+        }
+      : null,
+    cartLink: cartLink
+      ? {
+          ariaLabel: cartLink.getAttribute('aria-label') || '',
+        }
+      : null,
+    cartBadge: cartBadge
+      ? {
+          className: cartBadge.className,
+          hidden: cartBadge.hidden,
+          text: cartBadge.textContent || '',
+        }
+      : null,
+  };
+}
+
+function applyDemoBannerTrackVisualState(state) {
+  const header = document.getElementById('site-header');
+  const demoBannerTrack = header?.querySelector('.demo-banner__track');
+  if (!demoBannerTrack) {
+    return;
+  }
+
+  if (!state?.demoBannerTrack) {
+    demoBannerTrack.style.removeProperty('animation');
+    demoBannerTrack.style.removeProperty('transform');
+    return;
+  }
+
+  demoBannerTrack.style.animation = 'none';
+  if (state.demoBannerTrack.transform && state.demoBannerTrack.transform !== 'none') {
+    demoBannerTrack.style.transform = state.demoBannerTrack.transform;
+  } else {
+    demoBannerTrack.style.removeProperty('transform');
+  }
+}
+
+function applySiteHeaderVisualState(state) {
+  if (!state || typeof state !== 'object') {
+    return false;
+  }
+
+  const header = document.getElementById('site-header');
+  if (!header) {
+    return false;
+  }
+
+  if (typeof header.mewSetMobileNavOpen === 'function') {
+    header.mewSetMobileNavOpen(Boolean(state.mobileNavOpen));
+  }
+
+  applyDemoBannerTrackVisualState(state);
+
+  const accountLink = document.getElementById('login-link');
+  if (accountLink && state.accountLink) {
+    accountLink.setAttribute('href', state.accountLink.href || mewPath('/account/login/'));
+    accountLink.className = state.accountLink.className || '';
+    accountLink.setAttribute('aria-label', state.accountLink.ariaLabel || 'Login');
+    accountLink.innerHTML = state.accountLink.html || '';
+  }
+
+  const cartLink = header.querySelector('.cart-link');
+  if (cartLink && state.cartLink) {
+    cartLink.setAttribute('aria-label', state.cartLink.ariaLabel || 'Cart');
+  }
+
+  const cartBadge = document.getElementById('cart-badge');
+  if (cartBadge && state.cartBadge) {
+    cartBadge.className = state.cartBadge.className || 'cart-badge';
+    cartBadge.textContent = state.cartBadge.text || '';
+    cartBadge.hidden = Boolean(state.cartBadge.hidden);
+  }
+
+  updateSiteHeaderOffset();
+  return true;
+}
+
+function setSiteHeaderVisualStateOverride(state) {
+  siteHeaderVisualStateOverride = state || null;
+  if (!siteHeaderVisualStateOverride) {
+    return false;
+  }
+  return applySiteHeaderVisualState(siteHeaderVisualStateOverride);
+}
+
+function clearSiteHeaderVisualStateOverride() {
+  siteHeaderVisualStateOverride = null;
+  applyDemoBannerTrackVisualState(null);
+}
+
+function applySiteHeaderVisualStateOverride() {
+  return Boolean(
+    siteHeaderVisualStateOverride &&
+    applySiteHeaderVisualState(siteHeaderVisualStateOverride)
+  );
+}
+
 async function updateLoginLink() {
   if (!window.MewApi) {
+    return;
+  }
+
+  if (applySiteHeaderVisualStateOverride()) {
     return;
   }
 
@@ -48,6 +176,9 @@ async function updateLoginLink() {
 
   try {
     const data = await MewApi.getLoginStatus();
+    if (applySiteHeaderVisualStateOverride()) {
+      return;
+    }
 
     if (data.loggedIn) {
       accountLink.href = mewPath('/account/');
@@ -93,8 +224,16 @@ async function updateCartBadge() {
     return;
   }
 
+  if (applySiteHeaderVisualStateOverride()) {
+    return;
+  }
+
   try {
     const status = await MewApi.getLoginStatus();
+    if (applySiteHeaderVisualStateOverride()) {
+      return;
+    }
+
     if (!status.loggedIn) {
       badge.hidden = true;
       cartLink.setAttribute('aria-label', 'Cart');
@@ -106,6 +245,10 @@ async function updateCartBadge() {
 
     if (error) {
       throw error;
+    }
+
+    if (applySiteHeaderVisualStateOverride()) {
+      return;
     }
 
     const itemCount = (data || []).reduce((sum, row) => sum + row.quantity, 0);
@@ -146,7 +289,16 @@ function bindMobileNav(header) {
     toggleIcon?.classList.replace('fa-bars', 'fa-xmark');
   };
 
-  toggle.addEventListener('click', () => {
+  header.mewSetMobileNavOpen = (isOpen) => {
+    if (isOpen) {
+      openNav();
+    } else {
+      closeNav();
+    }
+  };
+
+  toggle.addEventListener('click', (event) => {
+    event.stopPropagation();
     if (header.classList.contains('nav-open')) {
       closeNav();
     } else {
@@ -162,6 +314,16 @@ function bindMobileNav(header) {
     if (event.key === 'Escape') {
       closeNav();
     }
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!header.classList.contains('nav-open')) {
+      return;
+    }
+    if (header.contains(event.target)) {
+      return;
+    }
+    closeNav();
   });
 
   window.addEventListener('resize', () => {
@@ -210,9 +372,17 @@ function bindAuthRefresh() {
 
 function bindCartBadgeRefresh() {
   window.addEventListener('mew:cart-updated', () => {
+    clearSiteHeaderVisualStateOverride();
     updateCartBadge();
   });
 }
+
+window.MewSiteHeader = {
+  captureVisualState: captureSiteHeaderVisualState,
+  setVisualStateOverride: setSiteHeaderVisualStateOverride,
+  clearVisualStateOverride: clearSiteHeaderVisualStateOverride,
+  restoreVisualState: applySiteHeaderVisualState,
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.getElementById('site-header');
@@ -223,6 +393,26 @@ document.addEventListener('DOMContentLoaded', () => {
   header.className = 'site-header';
 
   header.innerHTML = `
+    <div class="demo-banner" role="note" aria-label="For demonstration purposes only.">
+      <div class="demo-banner__track" aria-hidden="true">
+        <div class="demo-banner__group">
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+        </div>
+        <div class="demo-banner__group">
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+          <span>For demonstration purposes only.</span>
+        </div>
+      </div>
+    </div>
     <div class="top-row">
       <div class="top-row-inner">
         <div class="logo">
@@ -259,4 +449,5 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateSiteHeaderOffset);
   updateLoginLink();
   updateCartBadge();
+  window.dispatchEvent(new CustomEvent('mew:site-header-ready'));
 });

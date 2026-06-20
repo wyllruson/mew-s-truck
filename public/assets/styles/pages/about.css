@@ -12,7 +12,7 @@
 #about-page .popup-box--hero p {
 	margin: 1.25rem 0 0;
 	text-align: left;
-	font-size: clamp(0.9rem, 1.8vw, 1rem);
+	font-size: 1rem;
 	line-height: 1.55;
 }
 
@@ -29,28 +29,66 @@
 	filter: blur(.1rem);
 }
 
-@media (max-width: 48rem) {
+@media (max-height: 1963px) {
 	#about-page {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		min-height: auto;
-		padding-bottom: 2rem;
+		min-height: calc(var(--design-height) * 1px);
+	}
+}
+
+@media (max-width: 3023px) {
+	#about-page {
+		min-height: 0;
+		overflow-x: clip;
+		overflow-y: visible;
 	}
 
 	#about-page > .bg-blur {
-		flex: 1;
-		min-height: calc(100dvh - var(--site-header-offset));
-		padding-bottom: 3rem;
+		min-height: 0;
+		padding-top: calc(var(--site-header-offset) + 4.5rem);
+		padding-bottom: calc(var(--footer-content-gap, 4rem) + 4rem + env(safe-area-inset-bottom, 0px));
+	}
+
+	#about-page .popup-box--hero {
+		top: auto;
+	}
+}
+
+@media (max-width: 64rem) {
+	#about-page {
+		padding-bottom: calc(var(--footer-content-gap, 4rem) + 4rem + env(safe-area-inset-bottom, 0px));
+		overflow-x: clip;
+		overflow-y: visible;
+	}
+
+	#about-page > .bg-blur {
+		min-height: 0;
+		padding-bottom: 4rem;
+	}
+
+	#about-page .popup-box--hero p {
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 48rem) {
+	#about-page {
+		min-height: auto;
+		overflow-x: clip;
+		overflow-y: visible;
+	}
+
+	#about-page > .bg-blur {
+		padding-bottom: 5rem;
 	}
 
 	#about-page .popup-box--hero {
 		position: relative;
 		z-index: 3;
+		margin-bottom: 0;
 	}
 
 	#about-page .popup-box--hero p {
-		font-size: clamp(0.875rem, 2.5vw, 0.95rem);
+		font-size: 1rem;
 		overflow-wrap: anywhere;
 		word-break: break-word;
 	}
@@ -58,11 +96,10 @@
 
 @media (max-width: 40rem) {
 	#about-page > .bg-blur {
-		padding-bottom: 4rem;
+		padding-bottom: 5.5rem;
 	}
 
 	#about-page .popup-box--hero p {
-		font-size: 0.9rem;
 		line-height: 1.6;
 	}
 }

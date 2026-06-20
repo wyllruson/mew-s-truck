@@ -91,9 +91,9 @@ mew-s-truck/
 │   │   │   └── pages/           # Page-specific CSS
 │   │   ├── scripts/
 │   │   │   ├── config/          # site-config, supabase client
-│   │   │   ├── core/            # header, footer, API helpers
+│   │   │   ├── core/            # header, footer, API/shared UI helpers
 │   │   │   ├── auth/            # shared auth UI feedback
-│   │   │   └── pages/           # Page-specific JavaScript
+│   │   │   └── pages/           # Page-specific JavaScript and home modules
 │   │   └── images/              # catalog sets, UI art, placeholder
 │   ├── about/                   # index.html only
 │   ├── account/                 # dashboard, login/, signup/

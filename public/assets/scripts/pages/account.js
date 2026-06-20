@@ -1,90 +1,12 @@
-let accountPreviewReturnFocus = null;
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text ?? '';
-  return div.innerHTML;
-}
-
-function setAccountPreviewMedia(isMystery, imageSrc, productName) {
-  const img = document.getElementById('account-preview-img');
-  const mysteryFace = document.getElementById('account-preview-mystery');
-  if (!img || !mysteryFace) {
-    return false;
-  }
-
-  if (isMystery) {
-    img.classList.add('is-preview-hidden');
-    mysteryFace.classList.remove('is-preview-hidden');
-    mysteryFace.setAttribute('aria-label', productName);
-    return true;
-  }
-
-  mysteryFace.classList.add('is-preview-hidden');
-  img.classList.remove('is-preview-hidden');
-  img.src = imageSrc;
-  img.alt = productName;
-  return true;
-}
-
-function openAccountPreview(imageSrc, productName, triggerEl, isMystery = false) {
-  const modal = document.getElementById('account-preview-modal');
-  if (!modal || !setAccountPreviewMedia(isMystery, imageSrc, productName)) {
-    return;
-  }
-
-  accountPreviewReturnFocus = triggerEl;
-  modal.hidden = false;
-  window.MewModal?.lock(modal);
-  document.getElementById('account-preview-close')?.focus();
-}
-
-function closeAccountPreview() {
-  const modal = document.getElementById('account-preview-modal');
-  if (!modal || modal.hidden) {
-    return;
-  }
-
-  modal.hidden = true;
-  window.MewModal?.unlock(modal);
-
-  if (accountPreviewReturnFocus) {
-    accountPreviewReturnFocus.focus({ preventScroll: true });
-    accountPreviewReturnFocus = null;
-  }
-}
-
-function initAccountPreview() {
-  const modal = document.getElementById('account-preview-modal');
-  const closeBtn = document.getElementById('account-preview-close');
-  const backdrop = modal?.querySelector('[data-dismiss-account-preview]');
-  const img = document.getElementById('account-preview-img');
-
-  if (!modal || !closeBtn || !backdrop || !img) {
-    return;
-  }
-
-  closeBtn.addEventListener('click', closeAccountPreview);
-  backdrop.addEventListener('click', closeAccountPreview);
-
-  modal.addEventListener('click', (evt) => {
-    evt.stopPropagation();
-  });
-
-  img.addEventListener('error', function onPreviewImageError() {
-    this.src = mewPath(MEW_PATHS.placeholder);
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key !== 'Escape' || modal.hidden) {
-      return;
-    }
-    closeAccountPreview();
-  });
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
-  initAccountPreview();
+  const accountPreview = MewMediaPreview.create({
+    modalId: 'account-preview-modal',
+    imageId: 'account-preview-img',
+    mysteryId: 'account-preview-mystery',
+    closeId: 'account-preview-close',
+    dismissSelector: '[data-dismiss-account-preview]',
+  });
+  accountPreview.bind();
 
   const session = await MewApi.requireSession();
   if (!session) {
@@ -151,13 +73,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const li = document.createElement('li');
     li.className = 'account-order__item';
     li.innerHTML = `
-      <button type="button" class="account-order__media-btn" aria-label="View larger image of ${escapeHtml(name)}">
+      <button type="button" class="account-order__media-btn" aria-label="View larger image of ${MewUtils.escapeHtml(name)}">
         ${mediaMarkup}
       </button>
       <div class="account-order__item-body">
-        <span class="account-order__item-name">${escapeHtml(name)}</span>
+        <span class="account-order__item-name">${MewUtils.escapeHtml(name)}</span>
         <span class="account-order__item-meta">Qty ${item.quantity}</span>
-        <span class="account-order__item-price">$${Number(item.price).toFixed(2)}</span>
+        <span class="account-order__item-price">${MewUtils.formatMoney(item.price)}</span>
       </div>
     `;
 
@@ -170,7 +92,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (mediaBtn) {
       mediaBtn.addEventListener('click', () => {
-        openAccountPreview(fullImagePath, name, mediaBtn);
+        accountPreview.open({
+          imageSrc: fullImagePath,
+          label: name,
+          triggerEl: mediaBtn,
+        });
       });
     }
 
@@ -196,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     header.innerHTML = `
       <span class="account-order__id">Order #${order.id}</span>
       <time class="account-order__date" datetime="${order.order_date}">${formattedDate}</time>
-      <span class="account-order__total">$${Number(order.total_price).toFixed(2)}</span>
+      <span class="account-order__total">${MewUtils.formatMoney(order.total_price)}</span>
     `;
 
     const itemList = document.createElement('ul');

@@ -14,7 +14,7 @@
 
 .service-page__title {
 	font-family: var(--font-family-site, var(--font-family-display));
-	font-size: clamp(1.35rem, 3vw, 1.85rem);
+	font-size: 1.85rem;
 	font-weight: 400;
 	color: #0a2a4a;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -223,9 +223,31 @@
 	box-shadow: 0 0 0.1875rem rgba(201, 74, 74, 0.35);
 }
 
+@media (max-width: 90rem) {
+	.service-layout {
+		grid-template-columns: minmax(0, 1fr) minmax(15rem, 20rem);
+		gap: 1.25rem;
+	}
+
+	.service-faq.popup-box,
+	.service-contact.popup-box {
+		padding: 1.15rem 1.25rem;
+	}
+}
+
+@media (max-width: 64rem) {
+	.service-page {
+		padding-top: calc(var(--site-header-offset) + 1.5rem);
+	}
+}
+
 @media (max-width: 56.25rem) {
 	.service-layout {
 		grid-template-columns: 1fr;
+	}
+
+	.service-page__title {
+		font-size: 1.85rem;
 	}
 }
 
@@ -240,7 +262,6 @@
 
 	.faq-item__question {
 		padding: 0.75rem 0.85rem;
-		font-size: 0.85rem;
 		white-space: normal;
 		overflow-wrap: anywhere;
 	}
@@ -258,11 +279,6 @@
 @media (max-width: 40rem) {
 	.service-page {
 		padding-inline: var(--site-gutter-narrow);
-		padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
-	}
-
-	.service-page__subtitle {
-		font-size: 0.875rem;
 	}
 
 	.service-faq.popup-box,
@@ -275,7 +291,6 @@
 	}
 
 	.service-search input {
-		font-size: 1rem;
 		min-height: 1.5rem;
 	}
 
@@ -284,7 +299,6 @@
 	}
 
 	.service-contact .form-group textarea {
-		font-size: 1rem;
 		min-height: 6.5rem;
 	}
 

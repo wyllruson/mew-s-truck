@@ -9,12 +9,18 @@
 	<link rel="stylesheet" href="../../assets/styles/layout.css">
 	<link rel="stylesheet" href="../../assets/styles/components.css">
 	<link rel="stylesheet" href="../../assets/styles/forms.css">
+	<style>
+		.form-hint,
+		.form-hint-list,
+		.form-hint-list li { color: #c00; }
+	</style>
 	<script src="https://kit.fontawesome.com/55e841592a.js" crossorigin="anonymous"></script>
 	<script src="../../assets/scripts/config/site-config.js"></script>
 	<script src="../../assets/scripts/core/site-scroll-restore.js"></script>
 	<script src="../../assets/scripts/config/supabase-config.js"></script>
 	<script src="../../assets/scripts/core/site-modal.js"></script>
 	<script src="../../assets/scripts/core/site-message.js"></script>
+	<script src="../../assets/scripts/core/site-utils.js"></script>
 	<script src="../../assets/scripts/core/mew-api.js"></script>
 	<script type="module" src="../../assets/scripts/config/supabase-init.js"></script>
 	<script src="../../assets/scripts/core/site-header.js" defer></script>
@@ -22,7 +28,7 @@
 	<script src="../../assets/scripts/auth/auth-form-feedback.js" defer></script>
 	<script src="../../assets/scripts/pages/signup.js" defer></script>
 </head>
-<body>
+<body class="auth-page">
 	<header id="site-header"></header>
 
 	<div class="popup-box">
@@ -31,11 +37,16 @@
 			<div class="form-group">
 				<label for="username">Username</label>
 				<input type="text" id="username" name="username" placeholder="mewcollector" required minlength="2" maxlength="32" autocomplete="username">
-				<p class="form-hint">2–32 characters</p>
+				<ul class="form-hint form-hint-list" aria-live="polite">
+					<li>2–32 characters</li>
+				</ul>
 			</div>
 			<div class="form-group">
 				<label for="email">Email</label>
 				<input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+				<ul class="form-hint form-hint-list" aria-live="polite">
+					<li>Must be a valid email address</li>
+				</ul>
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
@@ -47,6 +58,9 @@
 			<div class="form-group">
 				<label for="confirm-password">Confirm your password</label>
 				<input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter new password" required minlength="8" autocomplete="new-password">
+				<ul class="form-hint form-hint-list" aria-live="polite">
+					<li>Must match the password above</li>
+				</ul>
 			</div>
 			<div class="form-buttons">
 				<button type="submit" class="btn-primary">Create account</button>

@@ -257,6 +257,7 @@
 
   window.MewScrollRestore = {
     pulse: pulseRestore,
+    save: saveScrollY,
     isLoginRestorePending: () => sessionStorage.getItem(LOGIN_RESTORE_PENDING_KEY) === '1',
     getLoginRestoreY: readLoginRestoreY,
     clearLoginRestore,

@@ -24,11 +24,24 @@
         "mewPath": "readonly",
         "MewApi": "readonly",
         "MewMessage": "readonly",
+        "MewMediaPreview": "readonly",
         "AuthFormFeedback": "readonly",
         "MewQtyStepper": "readonly",
+        "MewUtils": "readonly",
         "MEW_SITE": "writable",
         "MEW_PATHS": "readonly",
         "MEW_SUPABASE": "readonly"
+      }
+    },
+    {
+      "files": [
+        "public/assets/scripts/pages/home.js",
+        "public/assets/scripts/pages/home/**/*.js"
+      ],
+      "rules": {
+        "no-undef": "off",
+        "no-redeclare": "off",
+        "no-unused-vars": "off"
       }
     }
   ]

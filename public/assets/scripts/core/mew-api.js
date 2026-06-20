@@ -220,26 +220,28 @@ async function getCartLinesByProductId() {
   return lines;
 }
 
-async function changeProductCartQuantity(productId, delta) {
-  const session = await requireSession();
+async function changeProductCartQuantity(productId, delta, activeSession) {
+  const session = activeSession || await requireSession();
   if (!session) {
     return 0;
   }
 
   const supabase = await getSupabase();
-  const maxStock = await getProductStock(productId);
+  const [maxStock, existingResult] = await Promise.all([
+    getProductStock(productId),
+    supabase
+      .from('cart_items')
+      .select('id, quantity')
+      .eq('product_id', productId)
+      .eq('is_mystery', false)
+      .maybeSingle(),
+  ]);
 
-  const { data: existing, error: fetchError } = await supabase
-    .from('cart_items')
-    .select('id, quantity')
-    .eq('product_id', productId)
-    .eq('is_mystery', false)
-    .maybeSingle();
-
-  if (fetchError) {
-    throw fetchError;
+  if (existingResult.error) {
+    throw existingResult.error;
   }
 
+  const existing = existingResult.data;
   const currentQuantity = existing?.quantity ?? 0;
   let nextQuantity = currentQuantity + delta;
 
@@ -306,7 +308,7 @@ async function changeCartItemQuantity(cartItemId, delta) {
     return existing.quantity;
   }
 
-  const maxStock = await getProductStock(existing.product_id);
+  const maxStock = existing.is_mystery ? 1 : await getProductStock(existing.product_id);
   const currentQuantity = existing.quantity;
   let nextQuantity = currentQuantity + delta;
 

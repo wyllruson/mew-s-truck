@@ -23,6 +23,24 @@
 	box-sizing: border-box;
 }
 
+@media (max-width: 3023px), (max-height: 1963px) {
+	.mystery-shop {
+		min-height: max(44rem, calc(100vw * var(--design-height) / var(--design-width)));
+	}
+
+	.mystery-shop > .bg-blur {
+		padding-bottom: 5rem;
+	}
+
+	.ad-box img {
+		width: min(20rem, 100%);
+		min-width: min(12rem, 100%);
+		aspect-ratio: auto 4 / 3;
+		max-height: none;
+		object-fit: contain;
+	}
+}
+
 .mystery-shop .popup-box--hero {
 	background: linear-gradient(155deg, #1a0028 0%, #4a0a5c 48%, #2a0638 100%);
 	--popup-border-color: #ff3de8;
@@ -72,7 +90,7 @@
 }
 
 .mystery-card p {
-	font-size: clamp(1.35rem, 3.5vw, 2rem);
+	font-size: 2rem;
 	margin: clamp(1rem, 3vw, 2rem);
 	text-align: center;
 	color: gold;
@@ -94,7 +112,7 @@
 .mystery-shop button {
 	margin-top: 1rem;
 	padding: 0.625rem 1.25rem;
-	font-size: clamp(0.9rem, 2vw, 1rem);
+	font-size: 1rem;
 	font-family: var(--font-family-site, var(--font-family-display));
 	color: #000000;
 	background-color: gold;
@@ -140,8 +158,14 @@
 	width: auto;
 	max-width: min(20rem, 100%);
 	min-width: 0;
-	max-height: 65vh;
+	max-height: none;
 	height: auto;
+}
+
+@media (max-width: 3023px) {
+	.ad-box img {
+		max-height: none;
+	}
 }
 
 @media (max-width: 90rem) {
@@ -150,7 +174,20 @@
 	}
 
 	.ad-box img {
-		max-height: 60vh;
+		width: min(20rem, 100%);
+		min-width: min(12rem, 100%);
+	}
+}
+
+@media (max-width: 56.25rem) {
+	.layout {
+		grid-template-columns: minmax(0, 1fr) minmax(10rem, auto) minmax(0, 1fr);
+		column-gap: 1rem;
+	}
+
+	.ad-box img {
+		width: min(20rem, 100%);
+		min-width: min(12rem, 100%);
 	}
 }
 
@@ -181,28 +218,39 @@
 	}
 
 	.mystery-shop .popup-box--hero {
+		margin-top: calc(var(--site-header-offset) + 2.75rem);
 		margin-bottom: 2rem;
 	}
 
 	.ad-box img {
-		max-height: 45vh;
+		width: min(20rem, calc(100vw - 2 * var(--site-gutter-narrow)));
+		min-width: min(14rem, calc(100vw - 2 * var(--site-gutter-narrow)));
 	}
 }
 
 @media (max-width: 40rem) {
+	.mystery-shop .popup-box--hero {
+		margin-top: calc(var(--site-header-offset) + 2.25rem);
+	}
+
 	.mystery-card .mystery-card-face {
 		width: clamp(10rem, 52vw, 13rem);
 	}
 
 	.mystery-card p {
-		font-size: clamp(1.15rem, 5vw, 1.65rem);
 		margin: 1rem;
 		overflow-wrap: anywhere;
 	}
 
 	.mystery-shop button {
+		margin-top: 0.5rem;
 		min-height: 2.75rem;
 		padding: 0.75rem 1.5rem;
+	}
+
+	.ad-box img {
+		width: min(18rem, calc(100vw - 2 * var(--site-gutter-narrow)));
+		min-width: min(13rem, calc(100vw - 2 * var(--site-gutter-narrow)));
 	}
 
 	.mystery-confirmation {
@@ -233,6 +281,11 @@
 
 	.mystery-shop .popup-box--hero {
 		margin-bottom: 1.5rem;
+	}
+
+	.ad-box img {
+		width: min(16rem, calc(100vw - 2 * var(--site-gutter-narrow)));
+		min-width: min(12rem, calc(100vw - 2 * var(--site-gutter-narrow)));
 	}
 }
 
