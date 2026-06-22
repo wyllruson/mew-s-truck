@@ -17,6 +17,26 @@ function mapSignupErrorMessage(error) {
   };
 }
 
+function isAuthPagePath(path) {
+  const loginPath = mewPath('/account/login/').replace(/\/$/, '');
+  const signupPath = mewPath('/account/signup/').replace(/\/$/, '');
+  const cartPath = mewPath('/cart/').replace(/\/$/, '');
+  const normalized = path.split(/[?#]/)[0].replace(/\/$/, '') || '/';
+  return normalized === loginPath || normalized === signupPath || normalized === cartPath;
+}
+
+function getSignupRedirectTarget() {
+  const returnHref = MewApi.consumeLoginReturnHref();
+  
+  // If there's a return href and it's not an auth page, use it
+  if (returnHref && !isAuthPagePath(returnHref)) {
+    return returnHref;
+  }
+  
+  // Otherwise redirect to home
+  return mewPath('/');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('.signup-form');
   AuthFormFeedback.bindClearOnInput(form);
@@ -97,15 +117,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      succeeded = true;
+      // Sign up succeeded, now sign in the user immediately
       AuthFormFeedback.showBanner(
         form,
         'success',
-        'Account created! Redirecting you to log in…'
+        'Account created! Logging you in…'
       );
-      window.setTimeout(() => {
-        window.location.href = mewPath('/account/login/');
-      }, 2000);
+
+      try {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (signInError) {
+          throw signInError;
+        }
+
+        succeeded = true;
+        
+        // Get the redirect target (previous page if not auth page, otherwise home)
+        const redirectTarget = getSignupRedirectTarget();
+        window.location.href = redirectTarget;
+      } catch (signInErr) {
+        console.error('Sign in after signup error:', signInErr);
+        AuthFormFeedback.showBanner(
+          form,
+          'error',
+          'Account created but login failed. Please log in manually.'
+        );
+        window.setTimeout(() => {
+          window.location.href = mewPath('/account/login/');
+        }, 2000);
+      }
     } catch (err) {
       console.error('Signup error:', err);
       AuthFormFeedback.showBanner(

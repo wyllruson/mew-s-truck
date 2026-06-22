@@ -45,6 +45,12 @@
 	margin: 0.35rem 0 0;
 }
 
+.auth-feedback,
+.field-error {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
 .form-buttons .btn-primary:disabled {
 	opacity: 0.75;
 	cursor: wait;
@@ -68,6 +74,7 @@
 	border: 1px solid #ccc;
 	border-radius: 0.3125rem;
 	outline: none;
+	text-overflow: ellipsis;
 }
 
 .form-group input:focus {

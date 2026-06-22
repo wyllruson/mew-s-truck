@@ -102,6 +102,7 @@
 	background: transparent;
 	border: none;
 	outline: none;
+	text-overflow: ellipsis;
 }
 
 .service-search input::placeholder {

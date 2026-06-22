@@ -311,8 +311,9 @@ body.site-message-open {
 	position: fixed;
 	inset: 0;
 	z-index: 1300;
-	display: grid;
-	place-items: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: 1.5rem;
 }
 
@@ -413,6 +414,8 @@ body.site-message-open {
 
 .site-message__text {
 	margin: 0 0 1.25rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .site-message__ok {

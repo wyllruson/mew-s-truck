@@ -211,7 +211,6 @@
 		margin-left: -6%;
 		margin-right: -6%;
 		background-image: url('../../images/ui/home-grass-divider.svg');
-		background-repeat: repeat-x;
 		background-size: auto 100%;
 		background-position: left bottom;
 	}
@@ -345,6 +344,7 @@
 	color: #1a1a1a;
 	outline: none;
 	box-shadow: inset 0 0 0 0.1rem rgba(75, 31, 174, 0.25);
+	text-overflow: ellipsis;
 }
 
 .filters-search-input::placeholder {
@@ -826,6 +826,7 @@ body.product-preview-open {
 
 .product-gallery--loading::before {
 	content: 'Loading cards…';
+	margin: 0 auto 20rem;
 	grid-column: 1 / -1;
 	align-self: center;
 	justify-self: center;
