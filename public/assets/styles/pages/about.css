@@ -29,13 +29,13 @@
 	filter: blur(.1rem);
 }
 
-@media (max-height: 1963px) {
+@media (max-height: 981px) {
 	#about-page {
 		min-height: calc(var(--design-height) * 1px);
 	}
 }
 
-@media (max-width: 3023px) {
+@media (max-width: 1511px) {
 	#about-page {
 		min-height: 0;
 		overflow-x: clip;

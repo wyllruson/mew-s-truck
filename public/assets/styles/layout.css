@@ -9,11 +9,11 @@
 }
 
 :root {
-	/* Design standard: 3024 × 1964 px artboard — base styles match this viewport exactly */
-	--design-width: 3024;
-	--design-height: 1964;
+	/* Design standard: 1512 × 982 logical px for the 14-inch MacBook Pro M2 Pro default display */
+	--design-width: 1512;
+	--design-height: 982;
 	--design-base-font: 16;
-	--design-viewport: 3024px;
+	--design-viewport: 1512px;
 	--site-scale: 1.125;
 	--bp-narrow: 40rem;
 	--bp-nav: 48rem;
@@ -34,6 +34,15 @@
 	--card-corner-y: 3.25%;
 	--card-clip-inset: 0.6%; 
 	--card-image-border-color: #fff;
+	--card-preview-max-height: 44rem;
+	--card-preview-max-width: 31.625rem;
+	--card-preview-viewport-max-height: calc(100dvh - 3.5rem);
+	--card-preview-viewport-max-width: calc(100vw - 2rem);
+	--card-preview-fit-width: min(
+		var(--card-preview-viewport-max-width),
+		var(--card-preview-max-width),
+		calc(var(--card-preview-viewport-max-height) * 0.71875)
+	);
 	--card-thumb-bg: #f4f3ef;
 	--font-family-body: silkscreen, Arial, sans-serif; /* default */
 	--font-family-display: Silkscreen, fantasy; /* theme override */
@@ -142,7 +151,7 @@ body {
 	background-color: transparent;
 }
 
-@media (max-width: 3023px), (max-height: 1963px) {
+@media (max-width: 1511px), (max-height: 981px) {
 	body {
 		min-height: min(calc(100vw * var(--design-height) / var(--design-width)), calc(var(--design-height) * 1px));
 	}

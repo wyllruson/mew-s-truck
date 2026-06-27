@@ -8,7 +8,7 @@
 	overflow: hidden;
 }
 
-@media (max-width: 3023px), (max-height: 1963px) {
+@media (max-width: 1511px), (max-height: 981px) {
 	#credit {
 		height: auto;
 		min-height: max(44rem, calc(100vw * var(--design-height) / var(--design-width)), calc(50rem + var(--footer-content-gap, 4rem)));

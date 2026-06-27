@@ -2,7 +2,7 @@
 
 .popup-box {
 	width: min(40%, calc(100% - 2 * var(--site-gutter)));
-	max-width: min(32rem, calc(var(--design-width) * 0.168 * 1px));
+	max-width: min(32rem, calc(var(--design-width) * 0.336 * 1px));
 	margin: calc(var(--site-header-offset) + 5rem) auto;
 	padding: clamp(2rem, 4vw, 3rem);
 	font-size: 1.5rem;
@@ -178,7 +178,7 @@
 	}
 }
 
-@media (max-width: 3023px), (max-height: 1963px) {
+@media (max-width: 1511px), (max-height: 981px) {
 	body.auth-page {
 		min-height: min(calc(100vw * var(--design-height) / var(--design-width)), calc(var(--design-height) * 1px));
 	}

@@ -220,6 +220,12 @@ async function getCartLinesByProductId() {
   return lines;
 }
 
+function isDuplicateCartItemError(error) {
+  const errorText = `${error?.message || ''} ${error?.details || ''}`;
+  return error?.code === '23505'
+    && errorText.includes('cart_items');
+}
+
 async function changeProductCartQuantity(productId, delta, activeSession) {
   const session = activeSession || await requireSession();
   if (!session) {
@@ -278,9 +284,43 @@ async function changeProductCartQuantity(productId, delta, activeSession) {
     const { error: insertError } = await supabase.from('cart_items').insert({
       user_id: session.user.id,
       product_id: productId,
+      is_mystery: false,
       quantity: nextQuantity,
     });
     if (insertError) {
+      if (isDuplicateCartItemError(insertError)) {
+        const { data: latest, error: latestError } = await supabase
+          .from('cart_items')
+          .select('id, quantity')
+          .eq('product_id', productId)
+          .eq('is_mystery', false)
+          .maybeSingle();
+
+        if (latestError) {
+          throw latestError;
+        }
+
+        if (latest) {
+          const latestQuantity = latest.quantity;
+          let latestNextQuantity = latestQuantity + delta;
+
+          if (latestNextQuantity > maxStock) {
+            if (delta > 0 && latestQuantity >= maxStock) {
+              throw new Error(`Only ${maxStock} in stock.`);
+            }
+            latestNextQuantity = maxStock;
+          }
+
+          const { error: updateError } = await supabase
+            .from('cart_items')
+            .update({ quantity: latestNextQuantity })
+            .eq('id', latest.id);
+          if (updateError) {
+            throw updateError;
+          }
+          return latestNextQuantity;
+        }
+      }
       throw insertError;
     }
   }

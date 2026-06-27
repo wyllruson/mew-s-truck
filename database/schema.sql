@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
   product_id integer NOT NULL REFERENCES pokemon_cards (id),
   is_mystery boolean NOT NULL DEFAULT false,
   quantity integer NOT NULL DEFAULT 1 CHECK (quantity > 0),
-  UNIQUE (user_id, product_id)
+  CONSTRAINT cart_items_user_id_product_id_is_mystery_key UNIQUE (user_id, product_id, is_mystery)
 );
 
 CREATE TABLE IF NOT EXISTS orders (
@@ -213,6 +213,29 @@ ALTER TABLE order_items
 
 UPDATE cart_items SET is_mystery = false WHERE is_mystery IS NULL;
 UPDATE order_items SET is_mystery = false WHERE is_mystery IS NULL;
+
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.cart_items'::regclass
+      AND conname = 'cart_items_user_id_product_id_key'
+  ) THEN
+    ALTER TABLE cart_items
+      DROP CONSTRAINT cart_items_user_id_product_id_key;
+  END IF;
+END;
+$$;
+
+DO $$
+BEGIN
+  ALTER TABLE cart_items
+    ADD CONSTRAINT cart_items_user_id_product_id_is_mystery_key UNIQUE (user_id, product_id, is_mystery);
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END;
+$$;
 
 DO $$
 BEGIN

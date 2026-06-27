@@ -95,6 +95,7 @@ function initStorefrontViewportFit() {
 
     storefront.style.setProperty('--home-storefront-min-height', `${Math.ceil(adjustedHeight)}px`);
     ticking = false;
+    homeGrassParallaxUpdate?.();
   };
 
   const scheduleStorefrontFit = () => {
@@ -129,8 +130,8 @@ function shouldDisableGrassParallax() {
 }
 
 function getDesignViewportHeight() {
-  const designWidth = 3024;
-  const designHeight = 1964;
+  const designWidth = 1512;
+  const designHeight = 982;
   return Math.min((window.innerWidth * designHeight) / designWidth, designHeight);
 }
 
@@ -153,6 +154,7 @@ function initGrassParallax() {
   }
 
   let scrollHandler = null;
+  let lastParallaxLayoutWidth = window.innerWidth;
 
   const applyParallaxState = () => {
     if (scrollHandler) {
@@ -160,9 +162,8 @@ function initGrassParallax() {
       scrollHandler = null;
     }
 
-    grassDiv.style.transform = '';
-
     if (shouldDisableGrassParallax()) {
+      grassDiv.style.transform = '';
       homeGrassParallaxUpdate = null;
       return;
     }
@@ -202,6 +203,13 @@ function initGrassParallax() {
   };
 
   applyParallaxState();
-  window.addEventListener('resize', applyParallaxState);
-}
+  window.addEventListener('resize', () => {
+    const viewportWidth = window.innerWidth;
+    if (viewportWidth === lastParallaxLayoutWidth) {
+      return;
+    }
 
+    lastParallaxLayoutWidth = viewportWidth;
+    applyParallaxState();
+  });
+}

@@ -56,6 +56,13 @@ async function capture(page) {
   return { state, screenshot, screenshotHash: hash(screenshot) };
 }
 
+async function waitForHomeReady(page) {
+  await page.waitForFunction(() => {
+    const gallery = document.getElementById('product-gallery');
+    return gallery && gallery.getAttribute('aria-busy') !== 'true';
+  });
+}
+
 function assertEqual(label, actual, expected) {
   const actualJson = JSON.stringify(actual);
   const expectedJson = JSON.stringify(expected);
@@ -128,11 +135,12 @@ async function compareScreenshots(page, before, after) {
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  const page = await browser.newPage({ viewport: { width: 1512, height: 982 } });
 
   await page.goto(AWAY_URL, { waitUntil: 'domcontentloaded' });
   await page.goto(HOME_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('.product-card', { timeout: 20000 });
+  await waitForHomeReady(page);
   await page.locator('#filters-open-btn').click();
   await page.locator('#in-stock').check();
   await page.locator('#filters-show-results').click();
@@ -170,6 +178,7 @@ async function compareScreenshots(page, before, after) {
   await page.goto(AWAY_URL, { waitUntil: 'domcontentloaded' });
   await page.goBack({ waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.getElementById('filters-modal')?.hidden === false);
+  await waitForHomeReady(page);
   await page.waitForTimeout(250);
   const afterBack = await capture(page);
 
@@ -186,6 +195,7 @@ async function compareScreenshots(page, before, after) {
   await page.goBack({ waitUntil: 'domcontentloaded' });
   await page.goForward({ waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.getElementById('filters-modal')?.hidden === false);
+  await waitForHomeReady(page);
   await page.waitForTimeout(250);
   const afterForward = await capture(page);
 

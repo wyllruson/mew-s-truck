@@ -39,10 +39,15 @@
 }
 
 /* Product gallery: full image, no faux border or corner crop */
+.product-card__media {
+	aspect-ratio: var(--card-aspect-ratio);
+	overflow: hidden;
+}
+
 .product-card__media img {
 	display: block;
 	width: 100%;
-	height: auto;
+	height: 100%;
 	object-fit: contain;
 	object-position: center;
 }
@@ -100,7 +105,7 @@
 	min-height: 100dvh;
 }
 
-@media (max-height: 1963px) {
+@media (max-height: 981px) {
 	#about-page > .bg-blur {
 		min-height: calc(var(--design-height) * 1px);
 	}
