@@ -31,7 +31,7 @@
 	left: 50%;
 	top: calc(var(--home-truck-grass-strip-overlap, 2rem) - var(--home-truck-grass-strip-height));
 	z-index: 2;
-	width: 100%;
+	width: 120%;
 	height: var(--home-truck-grass-strip-height);
 	transform: translateX(-50%); 
 	background-image: url('../../images/ui/home-grass-divider.svg');
@@ -51,7 +51,7 @@
 		- var(--home-truck-grass-strip-2-lift, 0rem)
 	);
 	z-index: 2;
-	width: 100%;
+	width: 110%;
 	height: var(--home-truck-grass-strip-2-height);
 	transform: translateX(-50%) scaleX(-1);
 	background-image: url('../../images/ui/home-grass-divider.svg');
@@ -274,6 +274,7 @@
 #filters-modal {
 	--filter-rock-light: #b5b5ab;
 	--filter-rock-dark: #585850;
+	--filters-modal-basis-width: 20rem;
 }
 
 .filters {
@@ -523,9 +524,10 @@ body.product-preview-open {
 	z-index: 1;
 	display: flex;
 	flex-direction: column;
-	width: min(20rem, calc(100vw - 3rem));
-	height: min(max(28rem, calc(85vw * var(--design-height) / var(--design-width))), 92.72rem);
-	max-height: 92.72rem;
+	width: min(var(--filters-modal-basis-width), calc(100vw - 3rem));
+	aspect-ratio: calc(20 * var(--design-base-font) * var(--site-scale)) / calc(0.85 * var(--design-height));
+	height: auto;
+	max-height: min(calc(0.85 * var(--design-height) * 1px), calc(100dvh - 3rem));
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -793,11 +795,12 @@ body.product-preview-open {
 .product-gallery {
 	--product-card-gap: clamp(1.25rem, 2vw, 2rem);
 	--product-card-columns: 6;
-	--product-card-min-width: 10.25rem;
 	display: grid;
-	grid-template-columns: repeat(var(--product-card-columns), minmax(var(--product-card-min-width), 1fr));
+	grid-template-columns: repeat(var(--product-card-columns), minmax(0, 1fr));
 	gap: var(--product-card-gap);
 	width: min(calc(100% - 2 * var(--site-gutter)), var(--site-content-max));
+	max-width: 100%;
+	min-width: 0;
 	margin: 0 auto 10rem;
 	padding-block: clamp(1.5rem, 4vw, 3rem);
 }
@@ -854,6 +857,7 @@ body.product-preview-open {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	min-width: 0;
 	margin: 0;
 	padding: 0;
 	background: linear-gradient(180deg, #fafaf8 0%, #ecece6 100%);
@@ -1164,8 +1168,7 @@ body.product-preview-open {
 	.filters-modal-panel {
 		width: min(22rem, calc(100vw - 2rem));
 		max-width: none;
-		height: min(max(28rem, calc(85vw * var(--design-height) / var(--design-width))), 92.72rem);
-		max-height: 92.72rem;
+		max-height: min(calc(0.85 * var(--design-height) * 1px), calc(100dvh - 2rem));
 		overflow: visible;
 		isolation: isolate;
 	}
@@ -1286,7 +1289,7 @@ body.product-preview-open {
 
 	.product-gallery {
 		--product-card-columns: 2;
-		--product-card-gap: 0.85rem;
+		--product-card-gap: clamp(0.65rem, 2.5vw, 0.85rem);
 		padding-block: 1.25rem;
 	}
 

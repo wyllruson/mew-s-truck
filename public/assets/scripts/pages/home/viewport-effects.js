@@ -135,26 +135,121 @@ function getDesignViewportHeight() {
   return Math.min((window.innerWidth * designHeight) / designWidth, designHeight);
 }
 
+const GRASS_PARALLAX_DESIGN_WIDTH = 1512;
+const GRASS_PARALLAX_DESIGN_HEIGHT = 982;
+const GRASS_PARALLAX_MIN_WIDTH = 768;
+const GRASS_PARALLAX_MAX_FACTOR = 0.45;
+const GRASS_PARALLAX_MIN_FACTOR = 0.12;
+const GRASS_PARALLAX_MIN_HEIGHT_MULTIPLIER = 0.65;
+const GRASS_PARALLAX_MAX_HEIGHT_MULTIPLIER = 1.35;
+const GRASS_PARALLAX_PORTRAIT_MIN_MULTIPLIER = 0.45;
+const GRASS_PARALLAX_LANDSCAPE_MAX_MULTIPLIER = 2.55;
+const GRASS_PARALLAX_SQUARE_MAX_MULTIPLIER = 1.55;
+const GRASS_PARALLAX_MOBILE_MAX_WIDTH = 64 * 16;
+
+function clampGrassParallax(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function smoothGrassParallaxStep(t) {
+  const x = clampGrassParallax(t, 0, 1);
+  return x * x * (3 - 2 * x);
+}
+
+function usesMobileGrassParallax() {
+  return window.innerWidth <= GRASS_PARALLAX_MOBILE_MAX_WIDTH;
+}
+
+function isViewportLargerThanDesignBasis(viewportWidth, viewportHeight) {
+  return viewportWidth >= GRASS_PARALLAX_DESIGN_WIDTH
+    || viewportHeight >= GRASS_PARALLAX_DESIGN_HEIGHT;
+}
+
+function getLargeViewportAspectMultiplier(viewportWidth, viewportHeight) {
+  if (!isViewportLargerThanDesignBasis(viewportWidth, viewportHeight)) {
+    return 1;
+  }
+
+  if (viewportWidth < viewportHeight) {
+    const portraitIntensity = smoothGrassParallaxStep(1 - (viewportWidth / viewportHeight));
+    return 1 - (1 - GRASS_PARALLAX_PORTRAIT_MIN_MULTIPLIER) * portraitIntensity;
+  }
+
+  if (viewportWidth > viewportHeight) {
+    const landscapeIntensity = smoothGrassParallaxStep(1 - (viewportHeight / viewportWidth));
+    return 1 + (GRASS_PARALLAX_LANDSCAPE_MAX_MULTIPLIER - 1) * landscapeIntensity;
+  }
+
+  return 1;
+}
+
+function getSquareAspectMultiplier(viewportWidth, viewportHeight) {
+  if (viewportWidth <= 0 || viewportHeight <= 0) {
+    return 1;
+  }
+
+  const aspect = viewportWidth / viewportHeight;
+  const squareness = Math.min(aspect, 1 / aspect);
+  const squareIntensity = smoothGrassParallaxStep(squareness);
+
+  return 1 + (GRASS_PARALLAX_SQUARE_MAX_MULTIPLIER - 1) * squareIntensity;
+}
+
 function getGrassParallaxFactor() {
-  if (window.matchMedia('(max-width: 48rem)').matches) {
-    return 0.12;
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight || GRASS_PARALLAX_DESIGN_HEIGHT;
+
+  const widthProgress = clampGrassParallax(
+    (viewportWidth - GRASS_PARALLAX_MIN_WIDTH)
+      / (GRASS_PARALLAX_DESIGN_WIDTH - GRASS_PARALLAX_MIN_WIDTH),
+    0,
+    1,
+  );
+  const widthFactor = GRASS_PARALLAX_MIN_FACTOR
+    + (GRASS_PARALLAX_MAX_FACTOR - GRASS_PARALLAX_MIN_FACTOR) * smoothGrassParallaxStep(widthProgress);
+
+  const heightSpeedup = clampGrassParallax(
+    viewportHeight / GRASS_PARALLAX_DESIGN_HEIGHT,
+    GRASS_PARALLAX_MIN_HEIGHT_MULTIPLIER,
+    GRASS_PARALLAX_MAX_HEIGHT_MULTIPLIER,
+  );
+
+  const aspectMultiplier = getLargeViewportAspectMultiplier(viewportWidth, viewportHeight);
+  const squareMultiplier = getSquareAspectMultiplier(viewportWidth, viewportHeight);
+
+  return widthFactor * heightSpeedup * aspectMultiplier * squareMultiplier;
+}
+
+function getGrassParallaxContentBottom(grassDiv) {
+  const img = grassDiv.querySelector('img');
+  if (img && window.getComputedStyle(img).display !== 'none') {
+    return grassDiv.offsetTop + img.offsetTop + img.offsetHeight;
   }
 
-  if (window.matchMedia('(max-width: 64rem)').matches) {
-    return 0.18;
+  return grassDiv.offsetTop + grassDiv.offsetHeight;
+}
+
+function getGrassParallaxMaxOffset(grassDiv, grassStrip2) {
+  if (!grassDiv || !grassStrip2 || grassDiv.parentElement !== grassStrip2.parentElement) {
+    return Number.POSITIVE_INFINITY;
   }
 
-  return 0.45;
+  const grassBottom = getGrassParallaxContentBottom(grassDiv);
+  const strip2Bottom = grassStrip2.offsetTop + grassStrip2.offsetHeight;
+
+  return Math.max(0, grassBottom - strip2Bottom);
 }
 
 function initGrassParallax() {
   const grassDiv = document.querySelector('.grass-div');
+  const grassStrip2 = document.querySelector('#grass-transition .truck-grass-strip-2');
   if (!grassDiv) {
     return;
   }
 
   let scrollHandler = null;
   let lastParallaxLayoutWidth = window.innerWidth;
+  let lastParallaxUsesMobileMode = usesMobileGrassParallax();
 
   const applyParallaxState = () => {
     if (scrollHandler) {
@@ -168,23 +263,27 @@ function initGrassParallax() {
       return;
     }
 
-    const parallaxFactor = getGrassParallaxFactor();
     let ticking = false;
 
     const update = () => {
-      if (window.matchMedia('(max-width: 64rem)').matches) {
+      const parallaxFactor = getGrassParallaxFactor();
+      const maxOffset = getGrassParallaxMaxOffset(grassDiv, grassStrip2);
+
+      if (usesMobileGrassParallax()) {
         const parentRect = grassDiv.parentElement?.getBoundingClientRect();
         const rect = parentRect || grassDiv.getBoundingClientRect();
-        const travel = Math.min(grassDiv.offsetHeight * parallaxFactor, 80);
+        const travel = Math.min(grassDiv.offsetHeight * parallaxFactor, maxOffset);
         const designViewportHeight = getDesignViewportHeight();
         const range = designViewportHeight + rect.height;
         const progress = range > 0
           ? Math.min(1, Math.max(0, (designViewportHeight - rect.top) / range))
           : 0;
+        const offset = Math.min(progress * travel, maxOffset);
 
-        grassDiv.style.transform = `translateY(${-progress * travel}px)`;
+        grassDiv.style.transform = `translateY(${-offset}px)`;
       } else {
-        grassDiv.style.transform = `translateY(${-window.scrollY * parallaxFactor}px)`;
+        const offset = Math.min(window.scrollY * parallaxFactor, maxOffset);
+        grassDiv.style.transform = `translateY(${-offset}px)`;
       }
       ticking = false;
     };
@@ -203,13 +302,26 @@ function initGrassParallax() {
   };
 
   applyParallaxState();
+  const grassImg = grassDiv.querySelector('img');
+  if (grassImg && !grassImg.complete) {
+    grassImg.addEventListener('load', () => homeGrassParallaxUpdate?.(), { once: true });
+    grassImg.addEventListener('error', () => homeGrassParallaxUpdate?.(), { once: true });
+  }
   window.addEventListener('resize', () => {
     const viewportWidth = window.innerWidth;
-    if (viewportWidth === lastParallaxLayoutWidth) {
+    const usesMobileMode = usesMobileGrassParallax();
+
+    if (usesMobileMode !== lastParallaxUsesMobileMode) {
+      lastParallaxLayoutWidth = viewportWidth;
+      lastParallaxUsesMobileMode = usesMobileMode;
+      applyParallaxState();
       return;
     }
 
-    lastParallaxLayoutWidth = viewportWidth;
-    applyParallaxState();
+    if (viewportWidth !== lastParallaxLayoutWidth) {
+      lastParallaxLayoutWidth = viewportWidth;
+    }
+
+    homeGrassParallaxUpdate?.();
   });
 }
