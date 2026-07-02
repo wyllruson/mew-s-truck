@@ -1,4 +1,5 @@
 #credit {
+	flex: 1;
 	height: 100dvh;
 	width: 100%;
 	background-image: url('../../images/ui/credits-background.png');
@@ -11,7 +12,7 @@
 @media (max-width: 1511px), (max-height: 981px) {
 	#credit {
 		height: auto;
-		min-height: max(44rem, calc(100vw * var(--design-height) / var(--design-width)), calc(50rem + var(--footer-content-gap, 4rem)));
+		min-height: max(100dvh, 44rem, calc(100vw * var(--design-height) / var(--design-width)), calc(50rem + var(--footer-content-gap, 4rem)));
 		overflow-x: hidden;
 		overflow-y: visible;
 		padding-bottom: calc(var(--footer-content-gap, 4rem) + 3rem + env(safe-area-inset-bottom, 0px));

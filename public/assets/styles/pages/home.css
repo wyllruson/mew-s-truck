@@ -200,7 +200,7 @@
 	#storefront {
 		min-height: var(
 			--home-storefront-min-height,
-			max(44rem, calc(100vw * var(--design-height) / var(--design-width)))
+			max(100dvh, 44rem, calc(100vw * var(--design-height) / var(--design-width)))
 		);
 	}
 }
@@ -1113,7 +1113,7 @@ body.product-preview-open {
 	#storefront {
 		min-height: var(
 			--home-storefront-min-height,
-			max(42rem, calc(100vw * var(--design-height) / var(--design-width)))
+			max(100dvh, 42rem, calc(100vw * var(--design-height) / var(--design-width)))
 		);
 	}
 
@@ -1278,7 +1278,7 @@ body.product-preview-open {
 	#storefront {
 		min-height: var(
 			--home-storefront-min-height,
-			max(38rem, calc(100vw * var(--design-height) / var(--design-width)))
+			max(100dvh, 38rem, calc(100vw * var(--design-height) / var(--design-width)))
 		);
 	}
 

@@ -1,5 +1,14 @@
 /* Auth form layout (login, signup) — extends .popup-box from components.css */
 
+body.auth-page {
+	min-height: 100dvh;
+	background-color: var(--page-sky-bg);
+}
+
+body.auth-page #site-footer {
+	margin-top: auto;
+}
+
 .popup-box {
 	width: min(40%, calc(100% - 2 * var(--site-gutter)));
 	max-width: min(32rem, calc(var(--design-width) * 0.336 * 1px));
@@ -179,10 +188,6 @@
 }
 
 @media (max-width: 1511px), (max-height: 981px) {
-	body.auth-page {
-		min-height: min(calc(100vw * var(--design-height) / var(--design-width)), calc(var(--design-height) * 1px));
-	}
-
 	body.auth-page .popup-box {
 		margin-top: calc(var(--site-header-offset) + 5rem);
 		margin-bottom: calc(var(--site-header-offset) + 5rem);
