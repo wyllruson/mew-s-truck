@@ -115,7 +115,3 @@ mew-s-truck/
 | `npm run serve`   | Static preview without live reload (port 3000)   |
 | `npm start`       | Alias for `npm run serve`                        |
 | `npm run lint`    | ESLint on shared and page JavaScript             |
-
-## License
-
-ISC

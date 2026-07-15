@@ -10,7 +10,8 @@ body.auth-page #site-footer {
 }
 
 .popup-box {
-	width: min(40%, calc(100% - 2 * var(--site-gutter)));
+	width: min(32rem, calc(100vw - 2 * var(--site-gutter-narrow)));
+	min-width: 0;
 	max-width: min(32rem, calc(var(--design-width) * 0.336 * 1px));
 	margin: calc(var(--site-header-offset) + 5rem) auto;
 	padding: clamp(2rem, 4vw, 3rem);
@@ -27,6 +28,7 @@ body.auth-page #site-footer {
 	display: flex;
 	flex-direction: column;
 	gap: 0.9375rem;
+	min-width: 0;
 	text-align: left;
 }
 
@@ -69,6 +71,7 @@ body.auth-page #site-footer {
 	display: flex;
 	flex-direction: column;
 	gap: 0.3125rem;
+	min-width: 0;
 }
 
 .form-group label {
@@ -78,6 +81,7 @@ body.auth-page #site-footer {
 }
 
 .form-group input {
+	min-width: 0;
 	padding: 0.625rem;
 	font-size: 0.875rem;
 	border: 1px solid #ccc;
@@ -132,76 +136,4 @@ body.auth-page #site-footer {
 
 .auth-switch a:hover {
 	text-decoration: underline;
-}
-
-@media (max-width: 64rem) {
-	.popup-box {
-		width: min(80%, calc(100% - 2 * var(--site-gutter-narrow)));
-		margin-top: calc(var(--site-header-offset) + 5rem);
-		margin-bottom: calc(var(--footer-content-gap, clamp(2rem, 6vw, 4rem)) + env(safe-area-inset-bottom, 0px));
-	}
-}
-
-@media (max-width: 48rem) {
-	.popup-box {
-		width: min(90%, calc(100% - 2 * var(--site-gutter-narrow)));
-		max-width: 28rem;
-	}
-
-	.auth-form {
-		gap: 1rem;
-	}
-
-}
-
-@media (max-width: 40rem) {
-	.popup-box {
-		width: calc(100% - 2 * var(--site-gutter-narrow));
-		margin-top: calc(var(--site-header-offset) + 3rem);
-		padding: clamp(1.5rem, 5vw, 2rem);
-		font-size: 1.5rem;
-		overflow-wrap: anywhere;
-		word-break: break-word;
-	}
-
-	.form-group input {
-		min-height: 2.75rem;
-		padding: 0.75rem;
-	}
-
-	.form-buttons .btn-primary {
-		min-height: 2.75rem;
-	}
-}
-
-@media (max-width: 26rem) {
-	.popup-box {
-		padding: 1.25rem 1rem;
-		--popup-border-outer: 0.65rem;
-		--popup-border-inner: 0.18rem;
-		--popup-radius: 1.5rem;
-	}
-
-	.popup-box h3 {
-		margin-bottom: 0.85rem;
-	}
-}
-
-@media (max-width: 1511px), (max-height: 981px) {
-	body.auth-page .popup-box {
-		margin-top: calc(var(--site-header-offset) + 5rem);
-		margin-bottom: calc(var(--site-header-offset) + 5rem);
-	}
-}
-
-@media (max-width: 64rem) {
-	body.auth-page .popup-box {
-		margin-bottom: calc(var(--footer-content-gap, 4rem) + env(safe-area-inset-bottom, 0px));
-	}
-}
-
-@media (max-width: 40rem) {
-	body.auth-page .popup-box {
-		margin-top: calc(var(--site-header-offset) + 3rem);
-	}
 }

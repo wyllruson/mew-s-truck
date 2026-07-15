@@ -2,7 +2,7 @@
 	position: relative;
 	flex: 1;
 	overflow: hidden;
-	min-height: 100dvh;
+	min-height: max(100dvh, calc(var(--design-height) * 1px));
 	width: 100%;
 }
 
@@ -30,13 +30,8 @@
 	filter: blur(.1rem);
 }
 
-@media (max-height: 981px) {
-	#about-page {
-		min-height: calc(var(--design-height) * 1px);
-	}
-}
-
-@media (max-width: 1511px) {
+/* wide */
+@media (max-width: 90rem) {
 	#about-page {
 		min-height: 0;
 		overflow-x: clip;
@@ -51,56 +46,5 @@
 
 	#about-page .popup-box--hero {
 		top: auto;
-	}
-}
-
-@media (max-width: 64rem) {
-	#about-page {
-		padding-bottom: calc(var(--footer-content-gap, 4rem) + 4rem + env(safe-area-inset-bottom, 0px));
-		overflow-x: clip;
-		overflow-y: visible;
-	}
-
-	#about-page > .bg-blur {
-		min-height: 0;
-		padding-bottom: 4rem;
-	}
-
-	#about-page .popup-box--hero p {
-		font-size: 1rem;
-	}
-}
-
-@media (max-width: 48rem) {
-	#about-page {
-		min-height: auto;
-		overflow-x: clip;
-		overflow-y: visible;
-	}
-
-	#about-page > .bg-blur {
-		padding-bottom: 5rem;
-	}
-
-	#about-page .popup-box--hero {
-		position: relative;
-		z-index: 3;
-		margin-bottom: 0;
-	}
-
-	#about-page .popup-box--hero p {
-		font-size: 1rem;
-		overflow-wrap: anywhere;
-		word-break: break-word;
-	}
-}
-
-@media (max-width: 40rem) {
-	#about-page > .bg-blur {
-		padding-bottom: 5.5rem;
-	}
-
-	#about-page .popup-box--hero p {
-		line-height: 1.6;
 	}
 }

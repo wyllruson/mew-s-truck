@@ -1,7 +1,11 @@
 .mystery-shop {
 	position: relative;
 	flex: 1;
-	min-height: 100dvh;
+	min-height: max(
+		100dvh,
+		44rem,
+		min(calc(100vw * var(--design-height) / var(--design-width)), calc(var(--design-height) * 1px))
+	);
 	width: 100%;
 	overflow: hidden;
 }
@@ -22,24 +26,7 @@
 	z-index: 1;
 	width: 100%;
 	box-sizing: border-box;
-}
-
-@media (max-width: 1511px), (max-height: 981px) {
-	.mystery-shop {
-		min-height: max(100dvh, 44rem, calc(100vw * var(--design-height) / var(--design-width)));
-	}
-
-	.mystery-shop > .bg-blur {
-		padding-bottom: 5rem;
-	}
-
-	.ad-box img {
-		width: min(20rem, 100%);
-		min-width: min(12rem, 100%);
-		aspect-ratio: auto 4 / 3;
-		max-height: none;
-		object-fit: contain;
-	}
+	padding-bottom: 5rem;
 }
 
 .mystery-shop .popup-box--hero {
@@ -156,42 +143,16 @@
 
 .ad-box img {
 	display: block;
-	width: auto;
+	width: min(20rem, 100%);
 	max-width: min(20rem, 100%);
-	min-width: 0;
+	min-width: min(12rem, 100%);
+	aspect-ratio: auto 4 / 3;
 	max-height: none;
 	height: auto;
+	object-fit: contain;
 }
 
-@media (max-width: 1511px) {
-	.ad-box img {
-		max-height: none;
-	}
-}
-
-@media (max-width: 90rem) {
-	.mystery-card .mystery-card-face {
-		width: clamp(10rem, 18vw, 13rem);
-	}
-
-	.ad-box img {
-		width: min(20rem, 100%);
-		min-width: min(12rem, 100%);
-	}
-}
-
-@media (max-width: 56.25rem) {
-	.layout {
-		grid-template-columns: minmax(0, 1fr) minmax(10rem, auto) minmax(0, 1fr);
-		column-gap: 1rem;
-	}
-
-	.ad-box img {
-		width: min(20rem, 100%);
-		min-width: min(12rem, 100%);
-	}
-}
-
+/* tabletw */
 @media (max-width: 48rem) {
 	.layout {
 		display: flex;
@@ -218,78 +179,12 @@
 		align-items: center;
 	}
 
-	.mystery-shop .popup-box--hero {
-		margin-top: calc(var(--site-header-offset) + 2.75rem);
-		margin-bottom: 2rem;
-	}
-
 	.ad-box img {
 		width: min(20rem, calc(100vw - 2 * var(--site-gutter-narrow)));
 		min-width: min(14rem, calc(100vw - 2 * var(--site-gutter-narrow)));
 	}
 }
-
-@media (max-width: 40rem) {
-	.mystery-shop .popup-box--hero {
-		margin-top: calc(var(--site-header-offset) + 2.25rem);
-	}
-
-	.mystery-card .mystery-card-face {
-		width: clamp(10rem, 52vw, 13rem);
-	}
-
-	.mystery-card p {
-		margin: 1rem;
-		overflow-wrap: anywhere;
-	}
-
-	.mystery-shop button {
-		margin-top: 0.5rem;
-		min-height: 2.75rem;
-		padding: 0.75rem 1.5rem;
-	}
-
-	.ad-box img {
-		width: min(18rem, calc(100vw - 2 * var(--site-gutter-narrow)));
-		min-width: min(13rem, calc(100vw - 2 * var(--site-gutter-narrow)));
-	}
-
-	.mystery-confirmation {
-		padding: 1rem;
-		place-items: center;
-	}
-
-	.mystery-confirmation__panel {
-		width: min(32rem, 100%);
-		padding: 1.5rem 1.25rem;
-		overflow-wrap: anywhere;
-		word-break: break-word;
-	}
-
-	.mystery-confirmation__panel::before {
-		border-radius: var(--popup-radius);
-	}
-
-	.mystery-confirmation__btn {
-		min-height: 2.75rem;
-	}
-}
-
-@media (max-width: 26rem) {
-	.layout {
-		row-gap: 1.25rem;
-	}
-
-	.mystery-shop .popup-box--hero {
-		margin-bottom: 1.5rem;
-	}
-
-	.ad-box img {
-		width: min(16rem, calc(100vw - 2 * var(--site-gutter-narrow)));
-		min-width: min(12rem, calc(100vw - 2 * var(--site-gutter-narrow)));
-	}
-}
-
+ 
 .mystery-confirmation[hidden] {
 	display: none;
 }
@@ -330,7 +225,7 @@
 	box-shadow: 0 0 40px rgba(255, 132, 103, 0.35);
 }
 
-.mystery-confirmation__panel h2 { 
+.mystery-confirmation__panel h2 {
 	font-size: 1.45rem;
 	color: #fff1be;
 	text-shadow: 0 0 12px rgba(255, 216, 101, 0.65);

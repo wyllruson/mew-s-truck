@@ -329,169 +329,14 @@
 	display: none;
 }
 
-@media (max-width: 90rem) {
-	.account-layout {
-		grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr);
-		gap: 1.25rem;
-	}
-
-	.account-profile.popup-box,
-	.account-orders.popup-box {
-		padding: 1.15rem 1.25rem;
-	}
-
-	.account-order {
-		padding: 0.95rem 1rem;
-	}
-}
-
 @media (max-width: 64rem) {
-	.account-page {
-		padding-top: calc(var(--site-header-offset) + 1.5rem);
-	}
-
-	.account-layout {
-		grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
-		gap: 1.25rem;
-	}
-}
-
-@media (max-width: 56.25rem) {
-	.account-profile.popup-box,
-	.account-orders.popup-box {
-		--popup-border-outer: 0.75rem;
-		--popup-border-inner: 0.225rem;
-	}
-
 	.account-layout {
 		grid-template-columns: 1fr;
 	}
-}
-
-@media (max-width: 48rem) {
-	.account-order__item-name,
-	.account-order__item-meta,
-	.account-profile__row dd {
-		overflow-wrap: anywhere;
-		word-break: break-word;
-	}
-
-	.account-page__title {
-		font-size: 1.85rem;
-	}
-
-	.account-profile {
-		flex-direction: row;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		gap: 0 1rem;
-		text-align: left;
-	}
-
-	.account-profile__badge {
-		margin-bottom: 0;
-	}
-
-	.account-profile__heading {
-		flex: 1 1 calc(100% - 5rem);
-		margin-bottom: 0.5rem;
-		padding-top: 0.35rem;
-	}
-
-	.account-profile__details {
-		flex: 1 1 100%;
-		margin-bottom: 1rem;
-	}
-
-	.account-profile__row {
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 1rem;
-	}
-
-	.account-profile__row dd {
-		text-align: right;
-	}
 
 	.account-logout-btn {
-		flex: 1 1 100%;
-	}
-
-	.account-order__header {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	.account-order {
-		min-width: 0;
-	}
-}
-
-@media (max-width: 40rem) {
-	.account-page {
-		padding-inline: var(--site-gutter-narrow);
-	}
-
-	.account-profile.popup-box,
-	.account-orders.popup-box {
-		padding: 1rem 1.1rem;
-	}
-
-	.account-profile__row {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.15rem;
-	}
-
-	.account-profile__row dd {
-		text-align: left;
-	}
-
-	.account-logout-btn {
-		min-height: 2.75rem;
-	}
-
-	.account-order {
-		padding: 0.85rem 0.95rem;
-	}
-
-	.account-order__item {
-		grid-template-columns: 2.75rem minmax(0, 1fr);
-		gap: 0.65rem;
-	}
-
-	.account-order__thumb {
-		width: 2.75rem;
-	}
-
-	.account-load-more {
-		min-height: 2.75rem;
-	}
-
-	.account-orders__empty-cta {
-		min-height: 2.75rem;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-}
-
-@media (max-width: 26rem) {
-	.account-profile {
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-	}
-
-	.account-profile__heading {
-		flex: none;
-		text-align: center;
-		padding-top: 0;
-	}
-
-	.account-profile__badge {
-		margin-bottom: 0.5rem;
+		width: 60%;
+		flex-shrink: 0;
 	}
 }
 
@@ -591,16 +436,4 @@ body.account-preview-open {
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
-}
-
-@media (max-width: 40rem) {
-	.account-preview {
-		--card-preview-viewport-max-height: calc(100dvh - 2rem);
-		--card-preview-viewport-max-width: calc(100vw - 1.5rem);
-	}
-
-	.account-preview__close {
-		top: max(0.75rem, env(safe-area-inset-top, 0px));
-		right: max(0.75rem, env(safe-area-inset-right, 0px));
-	}
 }

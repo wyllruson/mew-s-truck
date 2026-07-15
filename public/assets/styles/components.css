@@ -105,12 +105,6 @@
 	min-height: 100dvh;
 }
 
-@media (max-height: 981px) {
-	#about-page > .bg-blur {
-		min-height: calc(var(--design-height) * 1px);
-	}
-}
-
 /* Welcome / intro hero panels (not auth forms) */
 .popup-box--hero:not(.popup-box--auth) {
 	top: calc(var(--site-header-offset) + 4.5rem);
@@ -125,47 +119,6 @@
 
 .popup-box--hero:not(.popup-box--auth) > p {
 	margin: 0;
-}
-
-@media (max-width: 64rem) {
-	.popup-box--hero:not(.popup-box--auth) {
-		top: calc(var(--site-header-offset) + 3.25rem);
-		width: min(100%, calc(var(--site-content-max) - 2rem));
-		padding: 2.25rem 2.5rem;
-		font-size: 1.5rem;
-	}
-}
-
-@media (max-width: 48rem) {
-	.popup-box--hero:not(.popup-box--auth) {
-		top: calc(var(--site-header-offset) + 2.75rem);
-		width: min(100%, calc(100% - 1.5rem));
-		max-width: none;
-		padding: 2rem 1.75rem;
-		font-size: 1.5rem;
-		line-height: 1.45;
-	}
-}
-
-@media (max-width: 40rem) {
-	.bg-blur {
-		padding-inline: var(--site-gutter-narrow);
-	}
-
-	.popup-box--hero:not(.popup-box--auth) {
-		top: calc(var(--site-header-offset) + 2.25rem);
-		width: 100%;
-		max-width: none;
-		padding: 1.5rem 1.1rem;
-		font-size: 1.5rem;
-		line-height: 1.45;
-	}
-}
-
-@media (max-width: 30rem) {
-	.popup-box--hero:not(.popup-box--auth) {
-		font-size: 1.5rem;
-	}
 }
 
 .btn-primary,
@@ -345,66 +298,6 @@ body.site-message-open {
 	line-height: 1.5;
 	animation: site-message-in 0.3s ease;
 }
-
-@media (max-width: 48rem) {
-	.popup-box--hero:not(.popup-box--auth) {
-		overflow-wrap: anywhere;
-		word-break: break-word;
-	}
-
-	.site-notice.popup-box {
-		overflow-wrap: anywhere;
-		word-break: break-word;
-		max-width: 100%;
-	}
-}
-
-@media (max-width: 40rem) {
-	.popup-box--hero:not(.popup-box--auth) {
-		--popup-border-outer: 0.65rem;
-		--popup-border-inner: 0.18rem;
-		--popup-radius: 1.5rem;
-	}
-
-	.site-notice.popup-box {
-		padding: 0.75rem 0.9rem;
-	}
-
-	.qty-stepper__btn {
-		width: 2rem;
-		height: 2rem;
-	}
-
-	.site-message {
-		padding: 1rem;
-		place-items: center;
-	}
-
-	.site-message__panel {
-		width: min(28rem, 100%);
-		padding: 1.5rem 1.25rem 1.25rem;
-		overflow-wrap: anywhere;
-		word-break: break-word;
-	}
-
-	.site-message__panel::before {
-		border-radius: var(--popup-radius);
-	}
-
-	.site-message__ok {
-		min-height: 2.75rem;
-	}
-}
-
-@media (max-width: 26rem) {
-	.popup-box--hero:not(.popup-box--auth) {
-		--popup-border-outer: 0.5rem;
-		--popup-border-inner: 0.15rem;
-		--popup-radius: 1.1rem;
-		padding: 1.25rem 0.9rem;
-	}
-}
-
 
 @keyframes site-message-in {
 	from {

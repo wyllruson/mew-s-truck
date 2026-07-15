@@ -233,6 +233,8 @@ function displayCartItems(items) {
             <div class="cart-item__qty-stepper" data-cart-item-id="${item.cart_item_id}"></div>
             <span class="cart-item__unit-price">· ${unitLabel}</span>
           </div>
+        </div>
+        <div class="cart-item__actions">
           <button
             type="button"
             class="remove-item-btn"

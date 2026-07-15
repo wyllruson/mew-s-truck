@@ -10,7 +10,7 @@
     "start": "npm run serve",
     "lint": "eslint \"public/assets/scripts/**/*.js\""
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "eslint": "^8.57.1",
     "live-server": "^1.2.2",
