@@ -13,7 +13,7 @@ body.auth-page #site-footer {
 	width: min(32rem, calc(100vw - 2 * var(--site-gutter-narrow)));
 	min-width: 0;
 	max-width: min(32rem, calc(var(--design-width) * 0.336 * 1px));
-	margin: calc(var(--site-header-offset) + 5rem) auto;
+	margin: calc(var(--site-header-offset) + 2rem) auto;
 	padding: clamp(2rem, 4vw, 3rem);
 	font-size: 1.5rem;
 }
