@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="footer-inner">
       <div class="footer-grid">
         <div class="footer-brand-block">
-          <a class="footer-logo" href="${mewPath('/')}">
+          <a class="footer-logo" href="${mewPath('/')}" data-home-link>
             <img src="${mewPath('/assets/images/ui/logo.png')}" alt="Mew's Truck home">
           </a>
           <p class="footer-tagline">Pokémon cards, mystery packs, and good vibes.</p>
@@ -38,4 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
   `;
+
+  window.MewSiteHeader?.bindGuestHomeReset?.(footer);
 });

@@ -63,6 +63,30 @@ async function waitForHomeReady(page) {
   });
 }
 
+async function assertCleanGuestHome(page, label) {
+  await page.waitForURL(HOME_URL);
+  await waitForHomeReady(page);
+  await page.waitForTimeout(250);
+
+  const state = await page.evaluate(() => ({
+    scrollY: Math.round(window.scrollY),
+    checked: [...document.querySelectorAll('#filters-options input[type="checkbox"]')]
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.value),
+    searchValue: document.getElementById('home-search-input')?.value,
+    filtersHidden: document.getElementById('filters-modal')?.hidden,
+    previewHidden: document.getElementById('product-preview-modal')?.hidden,
+  }));
+
+  assertEqual(label, state, {
+    scrollY: 0,
+    checked: [],
+    searchValue: '',
+    filtersHidden: true,
+    previewHidden: true,
+  });
+}
+
 function assertEqual(label, actual, expected) {
   const actualJson = JSON.stringify(actual);
   const expectedJson = JSON.stringify(expected);
@@ -245,6 +269,41 @@ async function compareScreenshots(page, before, after) {
   await page.waitForFunction(() => document.getElementById('product-preview-modal')?.hidden === false);
   await page.locator('#product-preview-close').click();
   await page.waitForFunction(() => document.getElementById('product-preview-modal')?.hidden === true);
+
+  await page.locator('#filters-open-btn').click();
+  await page.locator('#in-stock').check();
+  await page.locator('#filters-show-results').click();
+  await page.locator('#home-search-input').fill('e');
+  await page.locator('#home-search-form').evaluate((form) => form.requestSubmit());
+  await page.evaluate(() => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+  });
+  await page.locator('[data-nav-key="products"]').click();
+  await assertCleanGuestHome(page, 'guest Products navigation');
+
+  await page.goto(`${BASE_URL}/account/login/`, { waitUntil: 'domcontentloaded' });
+  await page.evaluate((homePath) => {
+    sessionStorage.setItem('mew:login-return', JSON.stringify({
+      href: homePath,
+      scrollY: 600,
+      homeState: {
+        filters: ['in-stock'],
+        search: 'e',
+      },
+    }));
+  }, new URL(HOME_URL).pathname);
+  await page.locator('.logo a').click();
+  await assertCleanGuestHome(page, 'guest logo navigation');
+
+  await page.evaluate(() => {
+    sessionStorage.setItem('mew:login-return', JSON.stringify({
+      href: window.location.pathname,
+      scrollY: 600,
+    }));
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+  });
+  await page.locator('.footer-logo').click();
+  await assertCleanGuestHome(page, 'guest footer logo navigation');
 
   console.log(JSON.stringify({
     ok: true,

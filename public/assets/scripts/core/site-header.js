@@ -5,6 +5,8 @@ const NAV_LINKS = [
 ];
 
 let siteHeaderVisualStateOverride = null;
+let siteHeaderLoginStatus = null;
+let siteHeaderLoginStatusPromise = null;
 
 function normalizeSitePath(pathname) {
   const base = (window.MEW_SITE?.basePath || '').replace(/\/$/, '');
@@ -34,8 +36,92 @@ function renderNavLinks() {
   const activeKey = getActiveNavKey();
   return NAV_LINKS.map(({ href, label, key }) => {
     const isActive = activeKey === key;
-    return `<a href="${mewPath(href)}"${isActive ? ' class="is-active" aria-current="page"' : ''}>${label}</a>`;
+    return `<a href="${mewPath(href)}" data-nav-key="${key}"${isActive ? ' class="is-active" aria-current="page"' : ''}>${label}</a>`;
   }).join('');
+}
+
+function getSiteHeaderLoginStatus() {
+  if (siteHeaderLoginStatus) {
+    return Promise.resolve(siteHeaderLoginStatus);
+  }
+  if (siteHeaderLoginStatusPromise) {
+    return siteHeaderLoginStatusPromise;
+  }
+
+  siteHeaderLoginStatusPromise = MewApi.getLoginStatus()
+    .then((status) => {
+      siteHeaderLoginStatus = status;
+      return status;
+    })
+    .finally(() => {
+      siteHeaderLoginStatusPromise = null;
+    });
+
+  return siteHeaderLoginStatusPromise;
+}
+
+function clearGuestHomeRestoreState() {
+  if (window.MewScrollRestore?.clearLoginRestore) {
+    window.MewScrollRestore.clearLoginRestore();
+    return;
+  }
+
+  try {
+    sessionStorage.removeItem('mew:login-return');
+    sessionStorage.removeItem('mew:login-restore-pending');
+  } catch {
+    // A fresh navigation still resets the page when session storage is unavailable.
+  }
+}
+
+async function shouldResetGuestHome() {
+  if (siteHeaderLoginStatus) {
+    return !siteHeaderLoginStatus.loggedIn;
+  }
+
+  try {
+    const status = await Promise.race([
+      getSiteHeaderLoginStatus(),
+      new Promise((resolve) => window.setTimeout(() => resolve(null), 750)),
+    ]);
+    return !status?.loggedIn;
+  } catch {
+    return true;
+  }
+}
+
+function isUnmodifiedPrimaryClick(event) {
+  return event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey;
+}
+
+function bindGuestHomeReset(root) {
+  const homeLinks = root.querySelectorAll('[data-home-link], [data-nav-key="products"]');
+
+  homeLinks.forEach((link) => {
+    link.addEventListener('click', async (event) => {
+      if (siteHeaderLoginStatus) {
+        if (!siteHeaderLoginStatus.loggedIn) {
+          clearGuestHomeRestoreState();
+        }
+        return;
+      }
+
+      if (!isUnmodifiedPrimaryClick(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      const destination = link.href;
+      if (await shouldResetGuestHome()) {
+        clearGuestHomeRestoreState();
+      }
+      window.location.assign(destination);
+    });
+  });
 }
 
 function captureSiteHeaderVisualState() {
@@ -175,7 +261,7 @@ async function updateLoginLink() {
   }
 
   try {
-    const data = await MewApi.getLoginStatus();
+    const data = await getSiteHeaderLoginStatus();
     if (applySiteHeaderVisualStateOverride()) {
       return;
     }
@@ -229,7 +315,7 @@ async function updateCartBadge() {
   }
 
   try {
-    const status = await MewApi.getLoginStatus();
+    const status = await getSiteHeaderLoginStatus();
     if (applySiteHeaderVisualStateOverride()) {
       return;
     }
@@ -361,6 +447,7 @@ function bindAuthRefresh() {
     try {
       const supabase = await MewApi.getSupabase();
       supabase.auth.onAuthStateChange(() => {
+        siteHeaderLoginStatus = null;
         updateLoginLink();
         updateCartBadge();
       });
@@ -382,6 +469,7 @@ window.MewSiteHeader = {
   setVisualStateOverride: setSiteHeaderVisualStateOverride,
   clearVisualStateOverride: clearSiteHeaderVisualStateOverride,
   restoreVisualState: applySiteHeaderVisualState,
+  bindGuestHomeReset,
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -416,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="top-row">
       <div class="top-row-inner">
         <div class="logo">
-          <a href="${mewPath('/')}">
+          <a href="${mewPath('/')}" data-home-link>
             <img src="${mewPath('/assets/images/ui/logo.png')}" alt="Mew's Truck home">
           </a>
         </div>
@@ -442,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
 
   bindMobileNav(header);
+  bindGuestHomeReset(header);
   bindCartHover(header.querySelector('.cart-link'));
   bindAuthRefresh();
   bindCartBadgeRefresh();
