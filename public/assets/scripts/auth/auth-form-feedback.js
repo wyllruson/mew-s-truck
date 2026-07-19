@@ -58,6 +58,64 @@
   }
 
   window.AuthFormFeedback = {
+    capture(form) {
+      const fields = {};
+      form.querySelectorAll('input, textarea, select').forEach((field) => {
+        if (!field.id || field.type === 'password' || field.type === 'submit') {
+          return;
+        }
+        fields[field.id] = field.type === 'checkbox' || field.type === 'radio'
+          ? Boolean(field.checked)
+          : field.value;
+      });
+      const banner = form.querySelector('.auth-feedback');
+      const fieldErrors = [...form.querySelectorAll('.form-group.is-invalid')]
+        .map((group) => {
+          const field = group.querySelector('input, textarea, select');
+          const error = group.querySelector('.field-error');
+          return field?.id && error ? { fieldId: field.id, message: error.textContent || '' } : null;
+        })
+        .filter(Boolean);
+      return {
+        fields,
+        banner: banner && !banner.hidden
+          ? { className: banner.className, message: banner.textContent || '' }
+          : null,
+        fieldErrors,
+      };
+    },
+
+    restore(form, state) {
+      if (!state || typeof state !== 'object') {
+        return;
+      }
+      Object.entries(state.fields || {}).forEach(([id, value]) => {
+        const field = form.querySelector(`#${CSS.escape(id)}`);
+        if (!field || field.type === 'password') {
+          return;
+        }
+        if (field.type === 'checkbox' || field.type === 'radio') {
+          field.checked = Boolean(value);
+        } else {
+          field.value = typeof value === 'string' ? value : '';
+        }
+      });
+      this.clear(form);
+      (state.fieldErrors || []).forEach(({ fieldId, message }) => {
+        const field = form.querySelector(`#${CSS.escape(fieldId)}`);
+        if (field) {
+          this.showFieldError(form, fieldId, message);
+        }
+      });
+      if (state.banner?.message) {
+        const type = state.banner.className?.includes('site-notice--success') ? 'success' : 'error';
+        this.showBanner(form, type, state.banner.message);
+      }
+      form.querySelectorAll('input[type="password"]').forEach((field) => {
+        field.value = '';
+      });
+    },
+
     clear(form) {
       const banner = form.querySelector('.auth-feedback');
       if (banner) {

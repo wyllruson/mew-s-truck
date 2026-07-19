@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const form = document.querySelector('.login-form');
   AuthFormFeedback.bindClearOnInput(form);
 
+  window.MewNavigationState?.registerPage({
+    key: 'login',
+    capture: () => AuthFormFeedback.capture(form),
+    restore: (state) => AuthFormFeedback.restore(form, state),
+    refresh: (state) => AuthFormFeedback.restore(form, state),
+  });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     AuthFormFeedback.clear(form);
@@ -68,4 +75,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       AuthFormFeedback.setLoading(form, false);
     }
   });
+
+  await window.MewNavigationState?.restorePage?.();
 });

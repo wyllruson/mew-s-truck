@@ -212,6 +212,25 @@ async function compareScreenshots(page, before, after) {
     throw new Error(`Forward viewport screenshot mismatch: ${JSON.stringify(forwardScreenshotDiff)}`);
   }
 
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => document.getElementById('filters-modal')?.hidden === false);
+  await waitForHomeReady(page);
+  await page.waitForTimeout(250);
+  const afterReload = await capture(page);
+
+  assertEqual('visible state after Reload', afterReload.state, before.state);
+  if (afterReload.screenshotHash !== before.screenshotHash) {
+    fs.writeFileSync('/private/tmp/home-after-reload.png', afterReload.screenshot);
+  }
+  const reloadScreenshotDiff = await compareScreenshots(
+    page,
+    before.screenshot,
+    afterReload.screenshot
+  );
+  if (reloadScreenshotDiff.ratio > MAX_SCREENSHOT_DIFF_RATIO) {
+    throw new Error(`Reload viewport screenshot mismatch: ${JSON.stringify(reloadScreenshotDiff)}`);
+  }
+
   await page.locator('.filter-tag--clear').click();
   const clearedDraftFilters = await page.evaluate(() => (
     [...document.querySelectorAll('#filters-options input[type="checkbox"]')]
@@ -234,6 +253,7 @@ async function compareScreenshots(page, before, after) {
     itemCount: afterBack.state.itemCount,
     backScreenshotDiff,
     forwardScreenshotDiff,
+    reloadScreenshotDiff,
     screenshotHash: afterBack.screenshotHash,
   }, null, 2));
 

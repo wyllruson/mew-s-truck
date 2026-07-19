@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  let accountPreviewTarget = null;
   const accountPreview = MewMediaPreview.create({
     modalId: 'account-preview-modal',
     imageId: 'account-preview-img',
     mysteryId: 'account-preview-mystery',
     closeId: 'account-preview-close',
     dismissSelector: '[data-dismiss-account-preview]',
+    onClose: () => {
+      accountPreviewTarget = null;
+    },
   });
   accountPreview.bind();
 
@@ -59,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     ordersError.textContent = '';
   }
 
-  function createOrderItemElement(item) {
+  function createOrderItemElement(item, orderId) {
     const fullImagePath = MewApi.normalizeImagePath(item.pokemon_cards?.image_path);
     const name = item.pokemon_cards?.name || 'Unknown item';
     const mediaMarkup = `<img
@@ -85,6 +89,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const media = li.querySelector('.account-order__thumb');
     const mediaBtn = li.querySelector('.account-order__media-btn');
+    if (mediaBtn) {
+      mediaBtn.dataset.orderId = String(orderId);
+      mediaBtn.dataset.productId = String(item.product_id);
+    }
     if (media?.tagName === 'IMG') {
       media.onerror = function onOrderImageError() {
         this.src = mewPath(MEW_PATHS.placeholder);
@@ -92,6 +100,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (mediaBtn) {
       mediaBtn.addEventListener('click', () => {
+        accountPreviewTarget = {
+          orderId: String(orderId),
+          productId: String(item.product_id),
+        };
         accountPreview.open({
           imageSrc: fullImagePath,
           label: name,
@@ -128,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const itemList = document.createElement('ul');
     itemList.className = 'account-order__items';
     (items || []).forEach((item) => {
-      itemList.appendChild(createOrderItemElement(item));
+      itemList.appendChild(createOrderItemElement(item, order.id));
     });
 
     orderArticle.appendChild(header);
@@ -210,7 +222,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  async function restoreAccountState(state) {
+    if (!state) {
+      return;
+    }
+    const targetCount = Number.parseInt(String(state.loadedOrderCount), 10);
+    while (Number.isFinite(targetCount) && offset < targetCount && !loadMoreBtn?.hidden) {
+      const previousOffset = offset;
+      await fetchAndRenderOrders();
+      if (offset <= previousOffset) {
+        break;
+      }
+    }
+
+    if (state.previewOpen && state.previewTarget) {
+      const button = [...document.querySelectorAll('.account-order__media-btn')]
+        .find((candidate) => (
+          candidate.dataset.orderId === String(state.previewTarget.orderId) &&
+          candidate.dataset.productId === String(state.previewTarget.productId)
+        ));
+      button?.click();
+    }
+  }
+
+  window.MewNavigationState?.registerPage({
+    key: 'account',
+    capture: () => ({
+      loadedOrderCount: offset,
+      previewOpen: document.getElementById('account-preview-modal')?.hidden === false,
+      previewTarget: accountPreviewTarget,
+    }),
+    restore: restoreAccountState,
+    refresh: async (state) => {
+      const currentSession = await MewApi.requireSession();
+      if (!currentSession) {
+        return;
+      }
+      offset = 0;
+      await fetchAndRenderOrders();
+      await restoreAccountState(state);
+    },
+  });
+
   await fetchAndRenderOrders();
+  await window.MewNavigationState?.restorePage?.();
   window.MewScrollRestore?.pulse();
 
   if (loadMoreBtn) {

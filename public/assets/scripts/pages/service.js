@@ -105,4 +105,38 @@ document.addEventListener('DOMContentLoaded', () => {
       AuthFormFeedback.setLoading(contactForm, false);
     }
   });
+
+  function captureServiceState() {
+    const openIndex = [...faqItems].findIndex((item) => item.classList.contains('is-open'));
+    return {
+      search: searchInput.value,
+      openFaqIndex: openIndex >= 0 ? openIndex : null,
+      contact: AuthFormFeedback.capture(contactForm),
+    };
+  }
+
+  function restoreServiceState(state) {
+    if (!state) {
+      return;
+    }
+    searchInput.value = typeof state.search === 'string' ? state.search : '';
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    faqItems.forEach((item, index) => {
+      const isOpen = index === state.openFaqIndex && !item.hidden;
+      item.classList.toggle('is-open', isOpen);
+      const button = item.querySelector('.faq-item__question');
+      const answer = item.querySelector('.faq-item__answer');
+      button.setAttribute('aria-expanded', String(isOpen));
+      answer.hidden = !isOpen;
+    });
+    AuthFormFeedback.restore(contactForm, state.contact);
+  }
+
+  window.MewNavigationState?.registerPage({
+    key: 'service',
+    capture: captureServiceState,
+    restore: restoreServiceState,
+    refresh: restoreServiceState,
+  });
+  void window.MewNavigationState?.restorePage?.();
 });

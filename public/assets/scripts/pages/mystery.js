@@ -1,6 +1,6 @@
 const MYSTERY_CLOSED_MESSAGE = 'the mystery shop is closed. come back next monday! 🔻';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const buyButton = document.getElementById('buy-mystery-card');
   const popupBox = document.querySelector('.popup-box--hero');
   const mysteryCard = document.querySelector('.mystery-card');
@@ -145,5 +145,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  refreshMysteryShopState();
+  function captureMysteryState() {
+    return {
+      confirmationOpen: Boolean(confirmationModal && !confirmationModal.hidden),
+      confirmation: {
+        title: confirmationTitle?.textContent || '',
+        message: confirmationMessage?.textContent || '',
+        primaryLabel: confirmationPrimary?.textContent || '',
+        primaryHref: confirmationPrimary?.getAttribute('href') || '../cart/',
+        secondaryLabel: confirmationSecondary?.textContent || '',
+        isWarning: Boolean(confirmationPanel?.classList.contains('is-warning')),
+      },
+    };
+  }
+
+  function restoreMysteryState(state) {
+    if (state?.confirmationOpen) {
+      openConfirmation(state.confirmation || {});
+    }
+  }
+
+  window.MewNavigationState?.registerPage({
+    key: 'mystery',
+    capture: captureMysteryState,
+    restore: restoreMysteryState,
+    refresh: async (state) => {
+      await refreshMysteryShopState();
+      restoreMysteryState(state);
+    },
+  });
+
+  await refreshMysteryShopState();
+  await window.MewNavigationState?.restorePage?.();
 });

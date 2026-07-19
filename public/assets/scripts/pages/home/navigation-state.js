@@ -134,6 +134,11 @@ function isBackForwardNavigation() {
 }
 
 function readHomeNavigationState({ requireBackForward = true } = {}) {
+  const sharedState = window.MewNavigationState?.getPendingPageState?.('home');
+  if (sharedState) {
+    return sharedState;
+  }
+
   if (requireBackForward && !isBackForwardNavigation()) {
     return null;
   }
@@ -365,19 +370,8 @@ function refreshHomeDerivedVisualState() {
   homeGrassParallaxUpdate?.();
 }
 
-function restoreHomeHeaderVisualState(state) {
-  if (!state?.headerState) {
-    return;
-  }
-
-  const restore = () => window.MewSiteHeader
-    ?.setVisualStateOverride?.(state.headerState) === true;
-
-  if (!restore()) {
-    window.addEventListener('mew:site-header-ready', restore, { once: true });
-  }
-  requestAnimationFrame(restore);
-  window.setTimeout(restore, 250);
+function restoreHomeHeaderVisualState() {
+  window.MewSiteHeader?.clearVisualStateOverride?.();
 }
 
 function getHomeVisualSnapshot() {
@@ -457,7 +451,6 @@ function getHomeNavigationState({
   const searchInput = document.getElementById('home-search-input');
   const filtersModal = document.getElementById('filters-modal');
   const filtersModalBody = document.querySelector('.filters-modal-body');
-  const siteHeader = document.getElementById('site-header');
 
   return {
     scrollY: getSnapshotScrollY(),
@@ -468,8 +461,8 @@ function getHomeNavigationState({
     filtersModalOpen: Boolean(filtersModal && !filtersModal.hidden),
     filtersModalScrollTop: filtersModalBody?.scrollTop || 0,
     previewProductId: getProductIdFromPreview(),
-    mobileNavOpen: Boolean(siteHeader?.classList.contains('nav-open')),
-    headerState: window.MewSiteHeader?.captureVisualState?.() || null,
+    mobileNavOpen: false,
+    headerState: null,
     loadedProductImageIds: getLoadedProductImageIdsFromDom(),
     galleryState: getHomeGalleryState(),
     activeElement: getHomeActiveElementState(),
@@ -481,6 +474,10 @@ function getHomeNavigationState({
 
 function saveHomeNavigationState({ full = true } = {}) {
   if (!isHomePage() || restoringHomeNavigationState) {
+    return;
+  }
+  if (window.MewNavigationState) {
+    window.MewNavigationState.save();
     return;
   }
   clearTimeout(homeNavigationSaveTimer);
@@ -1123,6 +1120,29 @@ function scheduleHomeLiveRefreshAfterRestore(state = null) {
     }
   }, 500);
 }
+
+window.MewNavigationState?.registerPage({
+  key: 'home',
+  capture: () => getHomeNavigationState({
+    includeProducts: false,
+    includeCartLines: false,
+    includeVisualSnapshot: false,
+  }),
+  restore: (state) => {
+    finalizeHomeNavigationRestore(state);
+  },
+  refresh: async (state) => {
+    if (!state || isLoginReturnRestorePending()) {
+      return;
+    }
+    applyHomeNavigationControls(state, { useDraftFilters: Boolean(state.filtersModalOpen) });
+    await loadProducts({
+      loadedProductImageIds: state.loadedProductImageIds,
+      restoreScrollY: state.scrollY,
+    });
+    finalizeHomeNavigationRestore(state);
+  },
+});
 
 function finishLoginReturnRestore() {
   unlockLoginReturnScroll();

@@ -1,4 +1,5 @@
 let cartPreview = null;
+let cartPreviewItemId = null;
 let orderSuccessReturnFocus = null;
 
 function getCartPreview() {
@@ -9,12 +10,16 @@ function getCartPreview() {
       mysteryId: 'cart-preview-mystery',
       closeId: 'cart-preview-close',
       dismissSelector: '[data-dismiss-cart-preview]',
+      onClose: () => {
+        cartPreviewItemId = null;
+      },
     });
   }
   return cartPreview;
 }
 
-function openCartPreview(imageSrc, productName, triggerEl, isMystery = false) {
+function openCartPreview(imageSrc, productName, triggerEl, isMystery = false, cartItemId = null) {
+  cartPreviewItemId = cartItemId == null ? null : String(cartItemId);
   getCartPreview().open({
     imageSrc,
     label: productName,
@@ -42,6 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('Error loading cart:', error);
   }
+
+  await window.MewNavigationState?.restorePage?.();
 
   const checkoutButton = document.getElementById('cart-checkout-btn');
   if (checkoutButton) {
@@ -258,7 +265,13 @@ function displayCartItems(items) {
     }
     if (mediaBtn) {
       mediaBtn.addEventListener('click', () => {
-        openCartPreview(imageSrc, item.product_name, mediaBtn, item.is_mystery);
+        openCartPreview(
+          imageSrc,
+          item.product_name,
+          mediaBtn,
+          item.is_mystery,
+          item.cart_item_id
+        );
       });
     }
 
@@ -415,4 +428,45 @@ document.addEventListener('click', async (event) => {
   } catch (error) {
     console.error('Network error while removing item from cart:', error);
   }
+});
+
+function captureCartNavigationState() {
+  const previewModal = document.getElementById('cart-preview-modal');
+  const successModal = document.getElementById('cart-order-success');
+  return {
+    previewItemId: previewModal?.hidden === false ? cartPreviewItemId : null,
+    orderSuccessOpen: successModal?.hidden === false,
+    orderSuccessId: document.getElementById('cart-order-success-id')?.textContent || '',
+  };
+}
+
+function restoreCartNavigationState(state) {
+  if (!state) {
+    return;
+  }
+  if (state.previewItemId != null) {
+    const row = [...document.querySelectorAll('.cart-item[data-cart-item-id]')]
+      .find((item) => item.dataset.cartItemId === String(state.previewItemId));
+    row?.querySelector('.cart-item__media-btn')?.click();
+  }
+  if (state.orderSuccessOpen) {
+    const savedOrderId = String(state.orderSuccessId || '');
+    const orderId = savedOrderId === '—' ? null : savedOrderId.replace(/^#/, '') || null;
+    showOrderSuccess(orderId);
+  }
+}
+
+window.MewNavigationState?.registerPage({
+  key: 'cart',
+  capture: captureCartNavigationState,
+  restore: restoreCartNavigationState,
+  refresh: async (state) => {
+    const session = await MewApi.requireSession();
+    if (!session) {
+      return;
+    }
+    const items = await fetchCartItems();
+    displayCartItems(items);
+    restoreCartNavigationState(state);
+  },
 });

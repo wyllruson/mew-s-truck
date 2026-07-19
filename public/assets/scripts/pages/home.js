@@ -4,12 +4,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     lockLoginReturnScroll();
   } else {
     pendingHomeNavigationState = readHomeNavigationState();
-    preserveRestoredHomeCartControls = Boolean(pendingHomeNavigationState);
-    restoreHomeVisualSnapshot(pendingHomeNavigationState);
   }
 
   initFilters();
   initHomeSearch();
+  if (pendingHomeNavigationState) {
+    applyHomeNavigationControls(pendingHomeNavigationState, {
+      useDraftFilters: Boolean(pendingHomeNavigationState.filtersModalOpen),
+    });
+  }
   restoreHomeSessionFromLoginReturn();
   initProductPreview();
   initStorefrontViewportFit();
@@ -32,9 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.addEventListener('pageshow', (evt) => {
     if (evt.persisted) {
       suppressNextVisibleCartSync = true;
-      preserveRestoredHomeCartControls = true;
       saveHomeNavigationState();
-      scheduleHomeLiveRefreshAfterRestore();
     }
   });
   document.addEventListener('visibilitychange', () => {
@@ -54,26 +55,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  const restoredHomeNavigationState = await restoreHomeNavigationStateFromCache();
-  if (restoredHomeNavigationState) {
-    scheduleHomeLiveRefreshAfterRestore(pendingHomeNavigationState);
-  }
-
   try {
-    if (!restoredHomeNavigationState) {
-      const loadOptions = {
-        loadedProductImageIds: pendingHomeNavigationState?.loadedProductImageIds,
-        restoreScrollY: pendingHomeNavigationState?.scrollY,
-      };
-      if (pendingHomeNavigationState) {
-        loadOptions.cartLinesOverride = cartLinesToMap(pendingHomeNavigationState.cartLines);
-      }
-      await loadProducts(loadOptions);
-      finalizeHomeNavigationRestore(pendingHomeNavigationState);
+    const loadOptions = {
+      loadedProductImageIds: pendingHomeNavigationState?.loadedProductImageIds,
+      restoreScrollY: pendingHomeNavigationState?.scrollY,
+    };
+    await loadProducts(loadOptions);
+    if (pendingHomeNavigationState) {
+      await window.MewNavigationState?.restorePage?.();
     }
     if (isLoginReturnRestorePending()) {
       applyLoginReturnScroll();
-    } else if (!restoredHomeNavigationState) {
+    } else {
       await syncProductCartControls();
       scheduleHomeNavigationStateSave();
     }
@@ -90,6 +83,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       await finalizeHomeLoginReturnScroll();
     } else if (!pendingHomeNavigationState) {
       await maybeScrollToFilterBarForLoggedInUser();
+    } else {
+      window.MewNavigationState?.restoreShared?.();
     }
   }
 });
